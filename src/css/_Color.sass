@@ -1,0 +1,35 @@
+@import '../../node_modules/open-color/open-color.scss'
+
+// Color
+// ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+$theme: "light" !default
+
+$color-initial: $oc-gray-9 !default
+$color-primary: $oc-teal-7 !default
+$color-primary-light: $oc-teal-5 !default
+$color-secondary: rgba(0, 0, 0, .7) !default
+$color-tertiary: $oc-gray-0 !default
+$color-quaternary: #d1d1d1 !default
+$color-quinary: #e1e1e1 !default
+
+$color-background: $oc-gray-1 !default  
+$color-card-primary: #ffffff !default  
+$color-card-secondary: $oc-gray-2 !default  
+$color-card-border: $oc-gray-4 !default  
+
+$color-input-border: $oc-gray-5 !default
+
+@if $theme == "dark"
+  $color-initial: #fff
+  $color-primary: $oc-teal-7
+  $color-primary-light: $oc-teal-5
+  $color-secondary: rgba(255, 255, 255, .7)
+  $color-tertiary: #f4f5f6
+  $color-quaternary: #d1d1d1
+  $color-quinary: #e1e1e1
+  $color-background: #212121  
+  $color-card-primary: #363636  
+  $color-card-secondary: #484848  
+  $color-card-border: #484848  
+  $color-input-border: #848484

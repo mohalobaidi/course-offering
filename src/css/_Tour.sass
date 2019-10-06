@@ -1,0 +1,45 @@
+.shepherd
+  .tippy-tooltip
+    max-width: 44rem !important
+    background: transparent !important
+  &[x-placement^="top"]
+    .tippy-arrow
+      border-top-color: rgb(41, 42, 45) !important
+  &[x-placement^="bottom"]
+    .tippy-arrow
+      border-bottom-color: rgb(41, 42, 45) !important
+  &-header
+    background: transparent !important
+    padding: .8rem !important
+    h3
+      color: rgba(white, 1) !important
+      font-size: 1.6rem !important
+      letter-spacing: 0 !important
+  &-content
+    background: rgb(41, 42, 45) !important
+    box-shadow: 0 0 0 1px rgba(11, 12, 15, .7),  0 1px 4px rgba(11, 12, 15, .5)
+    padding: .8rem !important
+  &-text
+    font-size: 1.4rem !important
+    color: rgba(white, .7) !important
+  &-footer
+    padding: .8rem !important
+  &-button
+    font-size: 1.0rem !important
+    height: 3.2rem !important
+    padding: 0 1.8rem !important
+    margin: 0 0 0 1.2rem !important
+    background: $color-primary !important
+    color: rgb(41, 42, 45) !important
+    &:hover
+      background: $color-primary-light !important
+    &-secondary
+      background: transparent !important
+      border: 1px solid rgba(white, .5) !important
+      box-sizing: border-box
+      color: $color-primary !important
+      &:hover
+        color: $color-primary-light !important
+        box-shadow: transparent 0 0 0 !important
+        background: rgba(white, .1) !important
+
