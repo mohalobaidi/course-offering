@@ -13,7 +13,7 @@ export default {
     default: {
       TABLE_CREATOR: ENABLED,
       SECTION_MONITOR: ENABLED,
-      AUTO_REGISTER: DISABLED,
+      AUTO_REGISTER: ENABLED,
       AUTO_REFRESH: ENABLED
     }
   },

@@ -1,7 +1,7 @@
 
 <template lang="pug">
   .Timetable.card(:style="{'--from': this.getFromPixel, '--cols': days.length, '--steps': getSteps}"  @contextmenu.prevent)
-    .timeline
+    .timeline(:style="{'--steps': getSteps}")
       span(v-for="t in getTimeline") {{ t }}
     .main
       .header
@@ -75,8 +75,16 @@ export default {
     hours () {
       return this.$store.getters.hours
     },
+    lastHour () {
+      return this.hours.reduce((last, hour) => {
+        let h = +hour.time.split('-')[1]
+        h = Math.ceil(h / 100 - 1) * 100
+        return Math.max(h, last)
+      }, 0)
+    },
     getTimeline () {
-      const { from, to, every } = this.timeline
+      let { from, to, every } = this.timeline
+      to = Math.max(to, this.lastHour)
       const output = [from]
 
       let last = output[output.length - 1]
@@ -97,7 +105,7 @@ export default {
       })
     },
     getSteps () {
-      return this.getTimeline.length * this.timeline.step
+      return (this.getTimeline.length) * this.timeline.step
     },
     getFromPixel () {
       const h = (this.timeline.from / 100) | 0
@@ -260,7 +268,15 @@ export default {
   border: 1px solid $color-card-border
   border-radius: 4px
   //box-shadow: 0 2px 4px rgba(173, 181, 189, 0.1)
+  overflow-y: auto !important
   display: flex
+  $bg: $color-card-primary
+  $shadow: rgba($color-card-border, .5)
+  background: linear-gradient(180deg,$bg 30%, rgba($bg ,0)), linear-gradient(180deg,rgba($bg, 0), $bg 70%) 0 100%,linear-gradient(180deg, $shadow 30%,rgba($shadow, 0)),linear-gradient(180deg,rgba($shadow, 0), $shadow 70%) 0 100%
+  background-repeat: no-repeat
+  background-size: 100% 32px,100% 32px,100% 16px,100% 16px
+  background-position: 0 0,0 100%,0 0,0 100%
+  background-attachment: local, local, scroll, scroll
   &Selector
     float: left
     width: 100%
@@ -276,6 +292,10 @@ export default {
     border-left: 1px solid $color-card-border
     color: $color-initial
     user-select: none
+    position: absolute
+    background: $color-card-primary
+    top: 0
+    width: calc(100% - 64px)
     span
       flex: 1
       text-align: center
@@ -285,6 +305,7 @@ export default {
     flex: 1
     display: flex
     flex-direction: column
+    padding-top: 32px
   .timeline
     background-color: $color-card-secondary
     padding-top: 32px
@@ -292,6 +313,9 @@ export default {
     display: flex
     flex-direction: column
     user-select: none
+    overflow: auto
+    min-height: 100%
+    height: calc(32px + 604px * (var(--steps) / 22))
     span
       flex: 1
       text-align: right
@@ -304,7 +328,8 @@ export default {
     flex: 1
     position: relative
   .hours
-    height: calc(100% - 2px)
+    // height: calc(100% - 2px)
+    height: 602px
     width: calc(100% - 1px)
     top: 1px
     left: 1px
@@ -356,10 +381,10 @@ export default {
       justify-content: space-between
       margin-left: 4px
   .grid
-    height: 100%
+    min-height: 100%
+    height: calc(604px * (var(--steps) / 22))
     background-size: calc(100% / var(--cols)) calc(100% / var(--steps))
     background-image: linear-gradient(to right, $color-card-border 1px, transparent 1px), linear-gradient(to bottom, $color-card-border 1px, transparent 1px)
-
   .list
     display: block
     background-color: darken(lighten($color-card-primary, 3%), 2%)

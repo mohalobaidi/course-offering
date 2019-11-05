@@ -35,7 +35,7 @@ export default {
 
   addCourse ({ commit, state, getters }, activities) {
     // Check if there is any late section
-    if (activities.filter(section => section.time.split('-')[1] > 1800).length)
+    if (activities.filter(section => section.time.split('-')[1] > 2200).length) // was 1800
     return commit('TOAST', {
       text: 'Sorry! late sections is not supported for now.'
     })
@@ -228,20 +228,10 @@ export default {
     state.table = tables.find(table => table.id === id) || { id, content: [] }
   },
 
-  // getRules ({ state }, term) {
-  //   const rules = Lockr.get('rules') || []
-  //   const id = state.session
-  //   const { content } = rules.find(rules => rules.id === id) || { id, content: [] }
-  //   state.rules = content
-  // },
-
-  load({ commit }) {
+  load({ commit, dispatch }) {
+    dispatch('roadmap/loadTerms')
     commit('LOAD')
   },
-
-
-
-
 
   copyTable ({ commit, state }, i) {
     const tables = Lockr.get('tables') || []
@@ -267,20 +257,21 @@ function parseData (doc) {
   const p = (trow, child) => {
       const raw = trow.childNodes[child].innerText + ''
       const [a, ...res] = raw.split(':')
-      if (';Course-Sec;Activity;CRN;Course Name;Instructor;Day;Time;Loc;Status;'.includes(`;${a};`))
+      const tags = ';Course-Sec;Activity;CRN;Course Name;Instructor;Day;Time;Loc;Status;'
+      if (tags.includes(`;${a};`))
           return res.join(':').trim()
       return raw
   }
   return Array.from(doc.getElementsByClassName('trow')).map(trow => ({
-      id:				p(trow, 0),
-      activity:		p(trow, 1),
-      crn:			p(trow, 2),
+      id:			    	p(trow, 0),
+      activity:	  	p(trow, 1),
+      crn:		    	p(trow, 2),
       course_name:	p(trow, 3),
       instructor:		p(trow, 4),
-      day:			p(trow, 5),
-      time:			p(trow, 6),
-      loc:			p(trow, 7),
-      status:		p(trow, 8).toLowerCase(),
+      day:		    	p(trow, 5),
+      time:		    	p(trow, 6),
+      loc:		    	p(trow, 7),
+      status:       p(trow, 8).toLowerCase(),
       // status:	  Math.random() < 0.25 ? 'open' : 'closed',
   }))
 }

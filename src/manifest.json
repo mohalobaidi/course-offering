@@ -1,8 +1,8 @@
 {
 	"name": "KFUPM Course Offering",
 	"short_name": "Course Offering",
-	"version": "0.2.7.1",
-	"version_name": "BETA (0.2.7)",
+	"version": "0.2.8",
+	"version_name": "BETA (0.2.8)",
 	"icons": {
 		"16": "icons/icon16.png",
 		"48": "icons/icon48.png",
@@ -38,18 +38,6 @@
 		},
 		{
 			"matches": ["https://registrar.kfupm.edu.sa/courseoffering?dark"],
-			"css": ["./css/dark.main.css"],
-			"js": ["./dark.main.js"],
-			"run_at": "document_start"
-		},
-		{
-			"matches": ["file:///Users/mohalobaidi/Desktop/KFUPM%20_%20Deanship%20of%20Admissions%20&%20Registration%20Office%20of%20the%20University%20Registrar.htm"],
-			"css": ["./css/main.css"],
-			"js": ["./main.js"],
-			"run_at": "document_start"
-		},
-		{
-			"matches": ["file:///Users/mohalobaidi/Desktop/KFUPM%20_%20Deanship%20of%20Admissions%20&%20Registration%20Office%20of%20the%20University%20Registrar.htm?dark"],
 			"css": ["./css/dark.main.css"],
 			"js": ["./dark.main.js"],
 			"run_at": "document_start"

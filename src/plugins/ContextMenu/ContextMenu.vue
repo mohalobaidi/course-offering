@@ -1,12 +1,12 @@
 <template lang="pug">
   #ContextMenu
-   .list(v-if="menu" :style="{top: `${menu.y}px`,left: `${menu.x}px`,transform: `translateX(-${offset}%)`}")
-    .item(
-      v-for="(item, i) in menu.items"
-      :key="i"
-      v-text="item.text"
-      :class="{hr: !item.text && item.text !== 0, disabled: item.disabled}"
-      @click="dispatch($event, item.action)")
+    .list(v-if="menu" :style="{top: `${menu.y}px`,left: `${menu.x}px`,transform: `translateX(-${offset}%)`}")
+      .item(
+        v-for="(item, i) in menu.items"
+        :key="i"
+        v-text="item.text"
+        :class="{hr: !item.text && item.text !== 0, disabled: item.disabled}"
+        @click="dispatch($event, item.action)")
 </template>
 
 <style lang="sass" scoped>
@@ -95,12 +95,22 @@ export default {
       this._menu = null
     },
     documentClick (e) {
+      if (this._menu == -Infinity) {
+        this._menu = null
+        return false
+      }
       this.menu = this._menu = null
     },
     contextmenu (menu) {
       if (typeof menu.items === "function")
         menu.items = menu.items()
       this._menu = menu
+    },
+    click (e, menu) {
+      if (typeof menu.items === "function")
+        menu.items = menu.items()
+      this.menu = menu
+      this._menu = -Infinity
     },
     dispatch (e, action) {
       if (action) action(e)
@@ -112,6 +122,7 @@ export default {
     window.addEventListener('scroll', this.documentClick)
     window.addEventListener('resize', this.documentClick)
     this.$root.$on('contextmenu', this.contextmenu)
+    this.$root.$on('click', this.click)
   },
   beforeDestroy () {
     document.removeEventListener('contextmenu', this.documentContextMenu)
@@ -119,6 +130,7 @@ export default {
     window.removeEventListener('scroll', this.documentClick)
     window.removeEventListener('resize', this.documentClick)
     this.$root.$off('contextmenu')
+    this.$root.$off('click')
   }
 };
 </script> 

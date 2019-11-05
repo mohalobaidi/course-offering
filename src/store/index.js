@@ -8,17 +8,15 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
-import database from './database'
-
 Vue.use(Vuex)
 Lockr.prefix = 'co_'
 
 const state = {
-
+  // TODO: Remove this later, (left for backward compatibility)
   rules: [],
   table: {id: '', content: []},
-  ////////////////////////
-  // Saved locally
+
+  // STORED LOCALLY
   data: [
     {
       term: '201810',
@@ -40,12 +38,14 @@ const state = {
     course: '',
     table: ''
   },
-  // Per Session
+
+  // SAVED PER SESSION
   session: {
     id: location.hash.substring(1),
     filters: []
   },
-  // Not Saved
+
+  // NOT STORED
   terms: [],
   departments: [],
   preventRefresh: true,
@@ -57,7 +57,5 @@ export default new Vuex.Store({
   mutations,
   actions,
   getters,
-  modules: {
-    flags,
-  },
+  modules: { flags }
 })

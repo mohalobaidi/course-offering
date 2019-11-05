@@ -14,10 +14,14 @@ export default {
     root.$on('create', function () {
 
     })
+    
     const open = (e, items) => {
       e.preventDefault()
       let { clientX: x, clientY: y } = e
-      root.$emit(`contextmenu`, { items, x, y })
+      if (e.type === 'contextmenu')
+        root.$emit('contextmenu', { items, x, y })
+      if (e.type === 'click')
+        root.$emit('click', e, { items, x, y })
     }
 
     vue.prototype.$context = { root, open }

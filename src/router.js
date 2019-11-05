@@ -13,9 +13,9 @@ if (location.search.startsWith('?import')) {
 
 // ROUTER
 
-if (location.pathname === '/Courseoffering') {
-
-} else if (location.pathname.toLowerCase() === '/courseoffering') {
+if (exactlyMatch('/Courseoffering')) {
+  // DO NOTHING (SHOW ORIGINAL PAGE)
+} else if (match('/courseoffering')) {
 
   let theme = localStorage.getItem('theme')
   theme = !theme || theme === 'light' ? '' : theme
@@ -40,6 +40,15 @@ if (location.pathname === '/Courseoffering') {
 
 document.addEventListener('DOMContentLoaded', () => {
   const ul = document.querySelector('nav li:nth-child(3) ul')
-  if (ul)
-    ul.innerHTML += '<li><a href="Courseoffering">Course Offering (Legacy)</a></li>'
+  if (ul) {
+    ul.innerHTML += '<li><a href="Courseoffering">Course Offering <span class="badge">Legacy</span></a></li>'
+  }
 })
+
+function exactlyMatch (page) {
+  return location.pathname === page
+}
+
+function match (page) {
+  return location.pathname.toLowerCase() === page
+}

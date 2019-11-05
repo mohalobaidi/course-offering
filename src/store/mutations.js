@@ -5,13 +5,11 @@ import Lockr from 'lockr'
 export default {
 
   // FILTER
-
   'UPDATE_SELECTED': (state, payload) => {
     state.selected = payload
   },
 
   // MONITOR
-
   'WATCH_SECTION': (state, { crn, type }) => {
     state.watching = [{ crn, type }, ...state.watching]
     Lockr.set('watching', state.watching)
@@ -28,13 +26,11 @@ export default {
   },
 
   // SOUNDS
-
   'TOGGLE_SOUND': state => {
     state.soundsEnabled = !state.soundsEnabled
   },
 
   // RULES
-
   'ADD_FILTER': (state) => {
     const filters = [...state.session.filters]
     filters.push({ type: '', keyword: '', striction: 'contains' })
@@ -60,7 +56,6 @@ export default {
   },
 
   // TABLE
-
   'ADD_COURSE': (state, activites) => {
     const tables = Lockr.get('tables') || []
     const { id, content } = state.table
@@ -82,7 +77,6 @@ export default {
   },
 
   // TOAST
-
   'TOAST': (state, { text, color, gravity }) => {
     Toastify({
       text,
@@ -94,7 +88,6 @@ export default {
   },
 
   // OFFERINGS
-
   'UPDATE_OFFERINGS': (state, payload) => {
     Vue.set(state.data[0], 'offerings', payload)
   },
@@ -106,7 +99,6 @@ export default {
   },
 
   // CLIPBOARD
-
   'SELECT_TABLE': (state, i) => {
     Vue.set(state.selected, 'table', i)
     const id = state.selected.term + i
@@ -151,8 +143,7 @@ export default {
       state.table = tables.find(table => table.id == `${state.selected.term}${i}`)
   },
 
-  // FLAG
-
+  // INITIAL LOAD
   'LOAD': (state) => {
     state.watching = Lockr.get('watching') || []
 
@@ -178,25 +169,5 @@ export default {
     }
 
   }
-
-  
+   
 }
-
-// // activity: "REC"
-// color: "#d9480f"
-// course_name: "General Chemistry I"
-// crn: "12143"
-// day: "M"
-// id: "CHEM101-01"
-// instructor: "ABDULRAHMAN AL-ARFAJ"
-// loc: "4-103"
-// // status: "closed"
-// time: "0700-0750"
-
-// course_name: "An Introduction to Academic Discourse"
-// crn: "10481"
-// day: "UTR"
-// id: "ENGL 101-34"
-// instructor: "MEHRING, JEFFREY"
-// loc: "6-105"
-// time: "1300-1350"

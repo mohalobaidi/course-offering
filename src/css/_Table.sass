@@ -9,8 +9,13 @@ table
   thead
     background-color: $color-card-secondary
     color: rgba($color-initial, .7)
-  th, td
-    padding-left: 16px !important
-    padding-right: 16px !important
-    border-bottom: 1px solid $color-card-secondary
-    text-align: left
+
+th, td
+  padding-left: 16px
+  padding-right: 16px
+  border-bottom: 1px solid $color-card-secondary
+  text-align: left
+  &:first-child
+    padding-left: 16px
+  &:last-child
+    padding-right: 16px

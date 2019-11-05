@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import store from '../../store'
 import ContextMenu from '../../plugins/ContextMenu'
-import Components from '../../components'
+import GlobalComponents from '../../components'
+import Components from './components'
 import Main from './Main.vue'
 import Settings from './Settings.vue'
 
 Vue.use(ContextMenu)
+Vue.use(GlobalComponents)
 Vue.use(Components)
 
 const app = new Vue({

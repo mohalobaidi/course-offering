@@ -1,13 +1,13 @@
 <template lang="pug">
 .CoursesList.row(v-if="sections.length != 0")
-	.column(style="flex: 1 1 0%;")
+	.column(style="max-width: calc(100% - 146px)")
 		.list
 			.section(v-for="section in sections" :key="section")
 				.name {{ section.split(',')[0] }}
 					span.remove(@click="remove(section.split(',')[1])") ×
 				.crn {{ section.split(',')[1] }}
 					span(style='font-size:1px;') &nbsp;
-	.column(v-if="AUTO_REGISTER" style="flex: 0 1 0%; margin: 12px 0px 36px;")
+	.column(v-if="AUTO_REGISTER" style="max-width: 126px; margin: 12px 0px 36px;")
 		.button(@click="register") Register
 </template>
 

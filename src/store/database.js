@@ -25,8 +25,9 @@ export const getOfferings = (term, dept) => new Promise ((resolve, reject) => {
         if (cursor.value.term == term && cursor.value.dept == dept)
           result.push(cursor.value)
         cursor.continue()
-      } else
+      } else {
         resolve(result)
+      }
     }
   })
 })
@@ -58,10 +59,4 @@ export const update = (term, dept, offerings) => {
   })
 }
 
-
-
-export default {
-  getOfferings,
-  getCourse,
-  update
-}
+export default { getOfferings, getCourse, update }

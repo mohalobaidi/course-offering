@@ -1,7 +1,8 @@
 const hash = {}
 let pairs = []
-if (window.location.hash.length > 1)
+if (window.location.hash.length > 1) {
   pairs = window.atob(window.location.hash.substring(1)).split('&')
+}
   
 for (let i in pairs ) {
   if (pairs[i] === '')
@@ -31,13 +32,13 @@ if (hash.term && hash.crn) {
   let register = localStorage.getItem('register') || '[]'
   register = JSON.parse(register) || []
 
-  // remove old request
+  // remove old requests
   register = register.filter(req => {
     const seconds = (new Date - req.date) / 1000 | 0
     return req.date && seconds <= 30
   })
 
-  // remove unsuccessful request
+  // remove unsuccessful requests
   register = register.filter(req => {
     return currentPage == 'classRegistration' || req.term
   })

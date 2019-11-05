@@ -1,5 +1,5 @@
 <template lang="pug">
-	.Icon(@click="$emit('click')" @mouseenter="isHovered = true", @mouseleave="isHovered = false")
+	.Icon(@click="$emit('click', $event)" @mouseenter="isHovered = true", @mouseleave="isHovered = false")
 		span(v-if="isHovered == false || !hover")
 			slot
 		span(v-else) {{ hover }}
