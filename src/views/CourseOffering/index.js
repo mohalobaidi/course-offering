@@ -6,6 +6,7 @@ import Components from './components'
 import Main from './Main.vue'
 import Settings from './Settings.vue'
 
+
 Vue.use(ContextMenu)
 Vue.use(GlobalComponents)
 Vue.use(Components)
