@@ -10,23 +10,22 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: action-yarn
-      uses: comchangs/action-yarn@v0.1-beta
-    - name: yarn install and build
-      run: |
-        yarn install
-        yarn run build
-      env:
-        CI: true
+#     - uses: actions/checkout@v1
+#     - name: action-yarn
+#       uses: comchangs/action-yarn@v0.1-beta
+#     - name: yarn install and build
+#       run: |
+#         yarn install
+#         yarn run build
+#       env:
+#         CI: true
     - name: Package Release
-      uses: thedoctor0/zip-release@master
+      uses: montudor/action-zip@v0.1.0
       with:
-        filename: release.zip
-        path: /dist
+        args: zip -qq -r ./src.zip ./src
     - name: Release 
       uses: softprops/action-gh-release@v1
       with:
