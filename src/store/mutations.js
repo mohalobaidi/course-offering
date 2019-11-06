@@ -55,6 +55,18 @@ export default {
     Lockr.set('sessions', sessions)
   },
 
+  'UPDATE_SCROLL': (state, scroll) => {
+    state.session.scroll = scroll || state.session.scroll
+    const sessions = Lockr.get('sessions') || []
+    const id = state.session.id
+    const session = sessions.find(session => session.id === id)
+    if (session) {
+      session.date = new Date
+      session.scroll = state.session.scroll
+    } else sessions.push({ id, date: new Date, scroll })
+    Lockr.set('sessions', sessions)
+  },
+
   // TABLE
   'ADD_COURSE': (state, activites) => {
     const tables = Lockr.get('tables') || []
@@ -152,6 +164,8 @@ export default {
     const session = sessions.find(session => session.id === id)
     if (session && session.filters)
       state.session.filters = session.filters
+    if (session && session.scroll)
+      state.session.scroll = session.scroll
 
     const imported = localStorage.getItem('co_import') || ''
     if (imported) {

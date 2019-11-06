@@ -42,6 +42,7 @@ const state = {
   // SAVED PER SESSION
   session: {
     id: location.hash.substring(1),
+    scroll: 0,
     filters: []
   },
 

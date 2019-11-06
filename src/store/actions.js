@@ -33,6 +33,10 @@ export default {
     commit('UPDATE_FILTERS', filter)
   },
 
+  updateScroll ({ commit }, scroll) {
+    commit('UPDATE_SCROLL', scroll)
+  },
+
   addCourse ({ commit, state, getters }, activities) {
     // Check if there is any late section
     if (activities.filter(section => section.time.split('-')[1] > 2200).length) // was 1800
@@ -229,7 +233,6 @@ export default {
   },
 
   load({ commit, dispatch }) {
-    dispatch('roadmap/loadTerms')
     commit('LOAD')
   },
 
