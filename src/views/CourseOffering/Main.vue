@@ -47,6 +47,7 @@ export default {
         this.$store.dispatch('getTable', term.value)
         this.$store.dispatch('updateOfferings', document)
         document.getElementsByClassName('container')[2].removeChild(document.getElementsByClassName('col-md-12')[0])
+
         setTimeout(() => {
             if (!window.scrollY)
                 window.scrollTo(0, this.$store.state.session.scroll)
