@@ -65,6 +65,7 @@ export default {
   name: 'Datatable',
   data () {
     return {
+      title: '',
       lastUpdate: new Date,
       refreshDisabled: false,
       autoRefresh: 0,
@@ -124,7 +125,9 @@ export default {
     },
     refresh () {
       let loader
-      const title = document.title
+      if (document.title.charAt(0) == 'K')
+        this.title = document.title
+      const title = this.title || document.title
       this.refreshDisabled = true
       const lastRefresh = new Date
       const enableRefresh = () => {
