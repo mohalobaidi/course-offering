@@ -233,6 +233,7 @@ export default {
   },
 
   load({ commit, dispatch }) {
+    // dispatch('roadmap/loadTerms')
     commit('LOAD')
   },
 
@@ -253,6 +254,12 @@ export default {
 
   clearTable ({ commit, state }, i) {
     commit('CLEAR_TABLE', i)
+  },
+
+  exportTable ({ state }, i) {
+    const tables = Lockr.get('tables') || []
+    let table = tables.find(table => table.id == `${state.selected.term}${i}`)
+    exportData(table, `${state.selected.term.slice(2, -1)}_table.cot`)
   }
 }
 
@@ -278,3 +285,17 @@ function parseData (doc) {
       // status:	  Math.random() < 0.25 ? 'open' : 'closed',
   }))
 }
+
+const a = document.createElement('a')
+document.body.appendChild(a)
+a.style = 'display: none'
+function exportData (data, fileName) {
+  const json = window.btoa(JSON.stringify(data))
+  const blob = new Blob([json], {type: 'octet/stream'})
+  const url = window.URL.createObjectURL(blob)
+  a.href = url
+  a.download = fileName
+  a.click()
+  window.URL.revokeObjectURL(url)
+}
+  

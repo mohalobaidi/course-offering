@@ -153,11 +153,63 @@ export default {
           action: () => this.$emit('save')
         },
         {
-          text: 'Print...',
-          disabled: true,//id != this.selected,
-          action: window.print
+          text: 'Export',
+          action: () => {
+            this.$store.dispatch('exportTable', id)
+          }
         },
-        { text: 'Share...', disabled: true },
+        {
+          text: 'Import...',
+          action: () => {
+            const input = document.createElement('input')
+            document.body.appendChild(input)
+            input.style = 'display: none'
+            input.type = 'file'
+            input.onchange = e => {
+              const file = e.target.files[0]
+              if (file) {
+                const reader = new FileReader()
+                reader.readAsText(file, 'UTF-8')
+                const def = () => {
+                  document.body.removeChild(input)
+                }
+                reader.onload = e => {
+                  let result = e.target.result
+                  try {
+                    result = JSON.parse(window.atob(result))
+                  } catch (e) {
+                    // ##ERROR
+                    return false
+                  }
+                  const { content } = result
+                  const term = result.id.slice(2, -2)
+                  const currentTerm = this.$store.state.selected.term.slice(2, -1)
+                  if (term !== currentTerm) {
+                    this.$store.commit('TOAST', {text: `Can't import ${term} table in ${currentTerm}.`})
+                    return false
+                  }
+                  const clipboard = Lockr.get('clipboard')
+                  Lockr.set('clipboard', { type: 'table', term, payload: { content } })
+                  const confirmMsg = "Warning: This will replace your current schedule.\nCancel and export your schedule now if you would like to save it.\n\nAre you sure you want to continue?"
+                  if (this.hours.length === 0 || confirm(confirmMsg))
+                    this.$store.dispatch('pasteTable', id)
+                  Lockr.set('clipboard', clipboard)
+                  def()
+                }
+                // reader.onerror = e => {
+                // ##ERROR
+                // }
+              }
+            }
+            input.click()
+          }
+        }
+        // {
+        //   text: 'Print...',
+        //   disabled: true,//id != this.selected,
+        //   action: window.print
+        // },
+        // { text: 'Share...', disabled: true },
       ]
     },
     courseMenu (e, hour) {
