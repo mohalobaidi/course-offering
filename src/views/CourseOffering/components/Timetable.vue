@@ -1,11 +1,11 @@
 
 <template lang="pug">
   .Timetable.card(:style="{'--from': this.getFromPixel, '--cols': days.length, '--steps': getSteps}"  @contextmenu.prevent)
-    .timeline(:style="{'--steps': getSteps}")
-      span(v-for="t in getTimeline") {{ t }}
+    .header
+      span(v-for="day in days") {{ day }}
     .main
-      .header
-        span(v-for="day in days") {{ day }}
+      .timeline(:style="{'--steps': getSteps}")
+        span(v-for="t in getTimeline") {{ t }}
       .body(@contextmenu.prevent="contextmenu")
         //- $event.target.classList.contains('hours') && $refs.courseMenu.close();
         transition(name="fade")
@@ -268,15 +268,7 @@ export default {
   border: 1px solid $color-card-border
   border-radius: 4px
   //box-shadow: 0 2px 4px rgba(173, 181, 189, 0.1)
-  overflow-y: auto !important
   display: flex
-  $bg: $color-card-primary
-  $shadow: rgba($color-card-border, .5)
-  background: linear-gradient(180deg,$bg 30%, rgba($bg ,0)), linear-gradient(180deg,rgba($bg, 0), $bg 70%) 0 100%,linear-gradient(180deg, $shadow 30%,rgba($shadow, 0)),linear-gradient(180deg,rgba($shadow, 0), $shadow 70%) 0 100%
-  background-repeat: no-repeat
-  background-size: 100% 32px,100% 32px,100% 16px,100% 16px
-  background-position: 0 0,0 100%,0 0,0 100%
-  background-attachment: local, local, scroll, scroll
   &Selector
     float: left
     width: 100%
@@ -287,27 +279,41 @@ export default {
       margin: 0
       margin-left: 32px
   .header
+    margin-left: 64px
     height: 32px
     display: flex
     border-left: 1px solid $color-card-border
     color: $color-initial
     user-select: none
     position: absolute
-    background: $color-card-primary
+    background: rgba($color-card-primary, .95)
+    box-shadow: 0 2px 4px rgba($color-card-primary, .5)
     top: 0
     width: calc(100% - 64px)
+    z-index: 10
+
     span
       flex: 1
       text-align: center
       font-size: 12px
       line-height: 32px
   .main
+    height: 100%
+    overflow-y: auto !important
     flex: 1
     display: flex
-    flex-direction: column
     padding-top: 32px
+    $bg: $color-card-primary
+    $top-shadow: rgba(black, .1)
+    $bottom-shadow: rgba($color-card-border, .8)
+    background: linear-gradient(180deg,$bg 30%, rgba($bg ,0)), linear-gradient(180deg,rgba($bg, 0), $bg 70%) 0 100%,linear-gradient(180deg, $top-shadow, rgba($top-shadow, 0)),linear-gradient(180deg,rgba($bottom-shadow, 0), $bottom-shadow 70%) 0 100%
+    background-repeat: no-repeat
+    background-size: 100% 12px,100% 32px,100% 6px,100% 16px
+    background-position: 0 32px,0 100%,0 32px,0 100%
+    background-attachment: local, local, scroll, scroll
   .timeline
     background-color: $color-card-secondary
+    margin-top: -32px
     padding-top: 32px
     width: 64px
     display: flex
@@ -386,7 +392,6 @@ export default {
     background-size: calc(100% / var(--cols)) calc(100% / var(--steps))
     background-image: linear-gradient(to right, $color-card-border 1px, transparent 1px), linear-gradient(to bottom, $color-card-border 1px, transparent 1px)
   .list
-    display: block
     background-color: darken(lighten($color-card-primary, 3%), 2%)
     border-left: 1px solid $color-card-border
     width: 21.6rem
