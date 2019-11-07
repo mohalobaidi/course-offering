@@ -10,12 +10,10 @@ jobs:
     steps:
     - name: Tag commit
       uses: tvdias/github-tagger@v0.0.1
-      env:
-        TITLE: ${{ github.event.commits[0].message }}
       if: startsWith(github.event.commits[0].message, 'v0.')
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        tag: "$TITLE"
+        tag: ${{ github.event.commits[0].message }}
     - uses: actions/checkout@v1
     - name: action-yarn
       uses: comchangs/action-yarn@v0.1-beta
@@ -29,6 +27,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: 0.2.10.zip
+        files: ${{ github.event.commits[0].message }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
