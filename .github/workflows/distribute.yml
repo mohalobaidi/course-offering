@@ -22,12 +22,18 @@ jobs:
         yarn run build
       env:
        CI: true
+#     - name: Release
+#       uses: softprops/action-gh-release@v1
+#       if: startsWith(github.ref, 'refs/tags/')
+#       with:
+#         files: |
+#           package.json
+          
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      uses: yakuhzi/action-release@v1
       with:
-        files: |
-          package.json
-          ${{ github.event.commits[0].message }}.zip
+        file: ${{ github.event.commits[0].message }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
