@@ -2,21 +2,32 @@ name: Distribute
 
 on: [push]
 
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-#     strategy:
-#       matrix:
-#         node-version: [12.x]
-
+    
     steps:
-      - name: Tag commit
-        uses: tvdias/github-tagger
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag: "my_tag"
+    - name: Tag commit
+      uses: tvdias/github-tagger
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        tag: "my_tag"
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+
+# #     strategy:
+# #       matrix:
+# #         node-version: [12.x]
+
+#     steps:
+#       - name: Tag commit
+#         uses: tvdias/github-tagger
+#         with:
+#           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+#           tag: "my_tag"
 #     - uses: actions/checkout@v1
 #     - name: action-yarn
 #       uses: comchangs/action-yarn@v0.1-beta
