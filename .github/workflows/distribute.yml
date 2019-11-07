@@ -1,35 +1,30 @@
 name: Distribute
 
-
 on: [push]
-#   push:
-#     # Sequence of patterns matched against refs/tags
-#     tags:
-#       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
+    
     steps:
-#     - uses: actions/checkout@v1
-#     - name: action-yarn
-#       uses: comchangs/action-yarn@v0.1-beta
-#     - name: yarn install and build
-#       run: |
-#         yarn install
-#         yarn run build
-#       env:
-#        CI: true
-    - name: Dump GitHub context
+    - name: Tag commit
+      uses: tvdias/github-tagger@v0.0.1
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
+        TITLE: ${{ github.event.commits[0].message }}
+      if: startsWith(github.event.commits[0].message, 'v0.')
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        tag: "$TITLE"
+    - uses: actions/checkout@v1
+    - name: action-yarn
+      uses: comchangs/action-yarn@v0.1-beta
+    - name: yarn install and build
+      run: |
+        yarn install
+        yarn run build
+      env:
+       CI: true
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
