@@ -178,21 +178,25 @@ export default {
                   try {
                     result = JSON.parse(window.atob(result))
                   } catch (e) {
-                    // ##ERROR
+                    this.$store.commit('TOAST', {text: `Unrecognized type of file.`})
                     return false
                   }
                   const { content } = result
-                  const term = result.id.slice(2, -2)
-                  const currentTerm = this.$store.state.selected.term.slice(2, -1)
+                  const term = result.id.slice(0, -1)
+                  const currentTerm = this.$store.state.selected.term
                   if (term !== currentTerm) {
-                    this.$store.commit('TOAST', {text: `Can't import ${term} table in ${currentTerm}.`})
+                    this.$store.commit('TOAST', {text: `Can't import ${term.slice(2, -1)} table in ${currentTerm.slice(2, -1)}.`})
                     return false
                   }
                   const clipboard = Lockr.get('clipboard')
+                  console.log(clipboard)
+                  console.log({ type: 'table', term, payload: { content } })
                   Lockr.set('clipboard', { type: 'table', term, payload: { content } })
                   const confirmMsg = "Warning: This will replace your current schedule.\nCancel and export your schedule now if you would like to save it.\n\nAre you sure you want to continue?"
-                  if (this.hours.length === 0 || confirm(confirmMsg))
+                  if (this.hours.length === 0 || confirm(confirmMsg)) {
+                    console.log(id)
                     this.$store.dispatch('pasteTable', id)
+                  }
                   Lockr.set('clipboard', clipboard)
                   def()
                 }
