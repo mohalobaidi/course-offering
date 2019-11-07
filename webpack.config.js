@@ -4,6 +4,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const Terser = require('terser')
 const CopyPlugin = require('copy-webpack-plugin')
+const { exec } = require('child_process')
 
 let config = theme => ({
   devtool : false,
@@ -95,6 +96,19 @@ let config = theme => ({
         to: 'icons'
       }
     ]),
+    {
+      apply: (compiler) => {
+        if (compiler.options.mode === 'production') {
+          compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+            const { version } = require('./dist/manifest.json')
+            exec(`zip -r ${version}.zip dist`, (err, stdout, stderr) => {
+              if (stdout) process.stdout.write(stdout)
+              if (stderr) process.stderr.write(stderr)
+            })
+          })
+        }
+      }
+    }
   ],
   optimization: {
     minimizer: [
