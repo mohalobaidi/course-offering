@@ -28,7 +28,7 @@ jobs:
 #        CI: true
     - name: Dump GitHub context
       env:
-        TITLE: ${{ toJson(github.event.commits) }}
+        TITLE: ${{ github.event.commits[0].message }}
       run: echo "$TITLE"
     - name: Release
       uses: softprops/action-gh-release@v1
