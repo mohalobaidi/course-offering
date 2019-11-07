@@ -31,9 +31,14 @@ jobs:
           
 #       env:
 #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Release
-      uses: yakuhzi/action-release@v1
+#     - name: Release
+#       uses: yakuhzi/action-release@v1
+#       with:
+#         file: ${{ github.event.commits[0].message }}.zip
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
       with:
-        file: ${{ github.event.commits[0].message }}.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        filename: 'release.zip'
+        exclusions: '*.git* /*node_modules/* .package.json src/* README.md webpack.config.js yarn.lock'
