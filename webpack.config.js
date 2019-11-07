@@ -101,7 +101,7 @@ let config = theme => ({
         if (compiler.options.mode === 'production') {
           compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
             const { version } = require('./dist/manifest.json')
-            exec(`zip -r ${version}.zip dist`, (err, stdout, stderr) => {
+            exec(`zip -r v${version}.zip dist`, (err, stdout, stderr) => {
               if (stdout) process.stdout.write(stdout)
               if (stderr) process.stderr.write(stderr)
             })
