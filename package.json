@@ -1,6 +1,6 @@
 {
   "name": "course-offering",
-  "version": "0.2.8.1",
+  "version": "0.2.10",
   "description": "",
   "main": "index.js",
   "scripts": {

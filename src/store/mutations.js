@@ -155,6 +155,27 @@ export default {
       state.table = tables.find(table => table.id == `${state.selected.term}${i}`)
   },
 
+  'COPY_COURSE': (state, { crn , i }) => {
+    const { term } = state.selected
+    const id = term + i
+    const tables = Lockr.get('tables') || []
+    const table = tables.find(table => table.id === id)
+    const hours = table.content.filter(hour => hour.crn === crn)
+    Lockr.set('clipboard', { type: 'course', term, payload: hours })
+  },
+
+  'PASTE_COURSE': (state, { activities, i }) => {
+    if (!Lockr.get('clipboard'))
+      return false
+    const id = state.selected.term + i
+    const tables = Lockr.get('tables') || []
+    const table = tables.find(table => table.id === id)
+    activities.forEach(activity => table.content.push(activity))
+    Lockr.set('tables', tables)
+    if (state.selected.table == i)
+      state.table = table
+  },
+
   // INITIAL LOAD
   'LOAD': (state) => {
     state.watching = Lockr.get('watching') || []

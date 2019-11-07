@@ -45,7 +45,16 @@ export default {
           text: 'Paste',
           disabled: !this.canPaste(id),
           action: () => {
-            this.$store.dispatch('pasteTable', id)
+            const clipboard = Lockr.get('clipboard')
+            if (clipboard.type === 'table')
+              this.$store.dispatch('pasteTable', id)
+            else if (clipboard.type === 'course')
+              this.$store.dispatch('pasteCourse', id)
+            else {
+              console.error(`Error: "${clipboard.type}" is not a recognized type.`)
+              console.warn(`Clipboard has been flushed out.`)
+              Lockr.set('clipboard')
+            }
           }
         },
         {
@@ -76,12 +85,8 @@ export default {
     },
     canPaste () {
       const clipboard = Lockr.get('clipboard')
-      if (!clipboard)
-        return true
-      if (clipboard.type == 'table' && clipboard.term == this.term)
-        return true
-      return false
-    }
+      return clipboard && clipboard.term === this.term
+    },
   }
 }
 </script>

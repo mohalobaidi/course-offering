@@ -1,7 +1,7 @@
 
 <template lang="pug">
   .Timetable.card(:style="{'--from': this.getFromPixel, '--cols': days.length, '--steps': getSteps}"  @contextmenu.prevent)
-    .header
+    .header(:class="{shrink: isSidebarOpen}")
       span(v-for="day in days") {{ day }}
     .main
       .timeline(:style="{'--steps': getSteps}")
@@ -136,7 +136,16 @@ export default {
           text: 'Paste',
           disabled: !this.canPaste(id),
           action: () => {
-            this.$store.dispatch('pasteTable', id)
+            const clipboard = Lockr.get('clipboard')
+            if (clipboard.type === 'table')
+              this.$store.dispatch('pasteTable', id)
+            else if (clipboard.type === 'course')
+              this.$store.dispatch('pasteCourse', id)
+            else {
+              console.error(`Error: "${clipboard.type}" is not a recognized type.`)
+              console.warn(`Clipboard has been flushed out.`)
+              Lockr.set('clipboard')
+            }
           }
         },
         {
@@ -189,12 +198,9 @@ export default {
                     return false
                   }
                   const clipboard = Lockr.get('clipboard')
-                  console.log(clipboard)
-                  console.log({ type: 'table', term, payload: { content } })
                   Lockr.set('clipboard', { type: 'table', term, payload: { content } })
                   const confirmMsg = "Warning: This will replace your current schedule.\nCancel and export your schedule now if you would like to save it.\n\nAre you sure you want to continue?"
                   if (this.hours.length === 0 || confirm(confirmMsg)) {
-                    console.log(id)
                     this.$store.dispatch('pasteTable', id)
                   }
                   Lockr.set('clipboard', clipboard)
@@ -222,9 +228,23 @@ export default {
           text: 'Search on stKFUPM',
           action: () => this.search(e)
         },
-        { text: 'Cut', disabled: true },
-        { text: 'Copy', disabled: true },
-        { text: 'Paste', disabled: true },
+        {
+          text: 'Cut',
+          action: () => {
+            const { crn } = hour
+            const i = this.$store.state.selected.table
+            this.$store.dispatch('copyCourse', { crn, i })
+            this.remove(crn)
+          }
+        },
+        {
+          text: 'Copy',
+          action: () => {
+            const { crn } = hour
+            const i = this.$store.state.selected.table
+            this.$store.dispatch('copyCourse', { crn, i })
+          }
+        },
         {
           text: 'Remove',
           action: () => this.remove(hour.crn),
@@ -235,7 +255,6 @@ export default {
           action: () => {
             this.$store.dispatch('getSections', hour).then(res => {
               this.isSidebarOpen = true
-              console.log(res)
               this.sections = res.filter(section => section.activities[0].crn != hour.crn)
             })
           }
@@ -296,11 +315,7 @@ export default {
     },
     canPaste () {
       const clipboard = Lockr.get('clipboard')
-      if (!clipboard)
-        return false
-      if (clipboard.type == 'table' && clipboard.term == this.term)
-        return true
-      return false
+      return clipboard && clipboard.term === this.term
     },
     remove (crn) {
       this.$store.dispatch('removeCourse', crn)
@@ -346,7 +361,11 @@ export default {
     box-shadow: 0 2px 4px rgba($color-card-primary, .5)
     top: 0
     width: calc(100% - 64px)
-    z-index: 10
+    will-change: width
+    transition: .5s width ease-in-out
+    z-index: 2
+    &.shrink
+      width: calc(100% - 28rem)
 
     span
       flex: 1
@@ -455,9 +474,10 @@ export default {
     flex-direction: column
     padding: 1.8rem .6rem
     box-shadow: -1px 0 4px rgba(0, 0, 0, .0)
-    z-index: 1
+    z-index: 3
     overflow-y: scroll
     transition: .5s box-shadow ease-in-out, .5s margin ease-in-out
+    will-change: margin, box-shadow
     margin-right: -21.6rem
     &.open
       margin-right: 0
@@ -476,6 +496,7 @@ export default {
       height: 100%
       background: rgba($color-card-primary, .5)
       transition: .2s opacity ease-in-out, .5s width ease-in-out
+      will-change: opacity, width
       cursor: pointer
     .empty
       height: 100%
@@ -513,6 +534,7 @@ export default {
         position: absolute
         opacity: 0
         transition: .2s opacity ease-in-out
+        will-change: opacity
         font-size: 4.8rem
       .title
         opacity: .38

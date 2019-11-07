@@ -69,14 +69,14 @@ export default {
           // break if already marked as conflicted section
           if (collision) break
           // End this iteration if they are not on the same day
-          if (day != hour.day) break
+          if (day != hour.day) continue
           
           const [a1, b1] = hour.time.split('-')
           const [a2, b2] = section.time.split('-')
           
           // End this iteration they are not conflicting
-          if (a1 < b2 && b1 < a2) break
-          if (a2 < b1 && b2 < a1) break
+          if (a1 < b2 && b1 < a2) continue
+          if (a2 < b1 && b2 < a1) continue
           
           // Mark as conflicted section
           collision = true
@@ -136,7 +136,6 @@ export default {
             return course.id.split('-')[0] === hour.title.split('-')[0]
           }).reduce((arr, activity) => {
             const id = activity.id.split('-').slice(1).join('-')
-            console.log(id)
             const section = arr.find(section => section.id == id)
             if (section)
               section.activities.push(activity)
@@ -255,6 +254,80 @@ export default {
   clearTable ({ commit, state }, i) {
     commit('CLEAR_TABLE', i)
   },
+
+  copyCourse ({ commit, state }, payload) {
+    commit('COPY_COURSE', payload)
+  },
+
+  pasteCourse ({ commit, state }, i) {
+    const activities = Lockr.get('clipboard').payload
+    // Check if there is any late section
+    if (activities.filter(section => section.time.split('-')[1] > 2200).length) // was 1800
+      return commit('TOAST', {
+        text: 'Sorry! late sections is not supported for now.'
+      })
+        
+    // Get duplicate section if exists
+    let duplicate = false
+    const course = activities[0].id.split('-')[0]
+    const crn = activities[0].crn
+    const activityTypes = activities.map(section => section.activity)
+
+    const { term } = state.selected
+    const id = term + i
+    const tables = Lockr.get('tables') || []
+    const table = tables.find(table => table.id === id)
+    const hours = table.content.filter(hour => hour.crn === crn)
+
+    hours.forEach(hour => {
+      if (hour.title.startsWith(course) && activityTypes.includes(hour.activity))
+      duplicate = hour.crn
+    })
+    
+    // Check if collision
+    let collision = false
+    for (let hour of hours) {
+      // break if already marked as conflicted section
+      if (collision) break
+      // Exclude duplicated section from checking process
+      if (hour.crn === duplicate) continue
+      for (let section of activities) {
+        // break if already marked as conflicted section
+        if (collision) break
+        for (let day of section.day.split('')) {
+          // break if already marked as conflicted section
+          if (collision) break
+          // End this iteration if they are not on the same day
+          if (day != hour.day) continue
+              
+          const [a1, b1] = hour.time.split('-')
+          const [a2, b2] = section.time.split('-')
+              
+          // End this iteration they are not conflicting
+          if (a1 < b2 && b1 < a2) continue
+          if (a2 < b1 && b2 < a1) continue
+              
+          // Mark as conflicted section
+          collision = true
+        }
+      }
+    }
+        
+    if (collision)
+      return commit('TOAST', {
+        text: 'Time conflict! please remove conflicted section first.'
+      })
+    
+    if (duplicate)
+      commit('REMOVE_COURSE', duplicate)
+      
+    commit('PASTE_COURSE', { activities , i })
+    commit('TOAST', {
+      text: `${duplicate ? 'REPLACED' : 'ADDED'} ${course}`,
+      color: 'rgba(81, 207, 102, .5)'
+    })
+  },
+
 
   exportTable ({ state }, i) {
     const tables = Lockr.get('tables') || []
