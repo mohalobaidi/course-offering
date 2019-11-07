@@ -37,8 +37,12 @@ jobs:
 #         file: ${{ github.event.commits[0].message }}.zip
 #       env:
 #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Archive Release
-      uses: thedoctor0/zip-release@master
+    - name: Release
+      uses: docker://antonyurchenko/git-release:latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DRAFT_RELEASE: "false"
+        PRE_RELEASE: "false"
+        CHANGELOG_FILE: "CHANGELOG.md"
       with:
-        filename: 'release.zip'
-        exclusions: '*.git* /*node_modules/* .package.json src/* README.md webpack.config.js yarn.lock'
+        args: ${{ github.event.commits[0].message }}.zip
