@@ -14,6 +14,7 @@
 	"web_accessible_resources": [
 		"sounds/*.mp3"
 	],
+	
 	"offline_enabled": false,
 	"browser_action": {},
 	"background": {
