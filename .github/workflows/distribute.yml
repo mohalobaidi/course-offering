@@ -4,12 +4,12 @@ on: [push]
 
 jobs:
   build:
+    if: startsWith(github.event.commits[0].message, 'v0.')
     runs-on: ubuntu-latest
     
     steps:
     - name: Tag commit
       uses: tvdias/github-tagger@v0.0.1
-      if: startsWith(github.event.commits[0].message, 'v0.')
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         tag: ${{ github.event.commits[0].message }}
