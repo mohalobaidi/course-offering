@@ -49,16 +49,18 @@ jobs:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1.0.0
+      if: startsWith(github.event.commits[0].message, 'v0.')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.event.commits[0].message }}
-        release_name: Release ${{ github.event.commits[0].message }}
+        release_name: Course Offering ${{ github.event.commits[0].message }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
+      if: startsWith(github.event.commits[0].message, 'v0.')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
