@@ -129,9 +129,8 @@ export default {
 
   getSections ({ state }, hour) {
     return new Promise((resolve, reject) => {
-      database.getCourse(hour.crn).then(courses => {
-        const { term, dept } = courses[0]
-        database.getOfferings(term, dept).then(offerings => {
+      database.getCourse(hour.crn).then(([{dept}]) => {
+        database.getOfferings(state.selected.term, dept).then(offerings => {
           const sections = offerings.filter(course => {
             return course.id.split('-')[0] === hour.title.split('-')[0]
           }).reduce((arr, activity) => {
