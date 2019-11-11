@@ -8,7 +8,7 @@
 				.crn {{ section.split(',')[1] }}
 					span(style='font-size:1px;') &nbsp;
 	.column(v-if="AUTO_REGISTER" style="max-width: 126px; margin: 12px 0px 36px;")
-		.button(@click="register") Register
+		.button(@click="register" :onclick="onclick()") Register
 </template>
 
 <script>
@@ -34,7 +34,17 @@ export default {
         const hash = window.btoa(query)
         window.open(`https://banner9-registration.kfupm.edu.sa/StudentRegistrationSsb/ssb/term/termSelection?mode=registration#${hash}`)
       }
-    },
+		},
+		onclick (type, section) {
+			const term = this.$store.state.selected.term
+      return `ga(
+        'extensionAnalytics.send',
+        'event',
+        'Table',
+        'register',
+        '${term}'
+      )`
+    }
   }
 }
 </script>

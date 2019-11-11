@@ -29,7 +29,9 @@
 
         td(): .tag(:class="section.activity.toLowerCase().trim()") {{ section.activity }}
 
-        td(): .crn(@click="onCrnClick($event, section.crn)") {{ section.crn }}
+        td(): .crn(
+          @click="onCrnClick($event, section.crn)"
+          :onclick="onclick('copy/register', section)") {{ section.crn }}
 
         td(v-for="header in headers.slice(3)") {{ section[header.value] }}
 
@@ -38,11 +40,22 @@
         td(v-if="watchType(section.crn) != 'NOT_WATCHED' && section.status == 'open'")
           .pill.open {{ notify(section.crn, watchType(section.crn)) }}
         td(v-else-if="SECTION_MONITOR && watchType(section.crn) == 'WATCHED'")
-          .pill.watching(:class="{disabled: !refreshDisabled && autoRefresh == 0}" @click="toggleWatching(section.crn, $event)")
+          .pill.watching(
+            :class="{disabled: !refreshDisabled && autoRefresh == 0}"
+            @click="toggleWatching(section.crn, $event)"
+            :onclick="onclick('unwatch', section)"
+            :key="`${i}-${watchType(section.crn)}`")
         td(v-else-if="SECTION_MONITOR && watchType(section.crn) == 'AUTO'")
-          .pill.auto(:class="{disabled: !refreshDisabled && autoRefresh == 0}" @click="toggleWatching(section.crn, $event)")
+          .pill.auto(
+            :class="{disabled: !refreshDisabled && autoRefresh == 0}"
+            @click="toggleWatching(section.crn, $event)"
+            :onclick="onclick('unauto', section)"
+            :key="`${i}-${watchType(section.crn)}`")
         td(v-else-if="SECTION_MONITOR && section.status == 'closed'")
-          .pill.closed(@click="toggleWatching(section.crn, $event)")
+          .pill.closed(
+            @click="toggleWatching(section.crn, $event)"
+            :onclick="onclick('watch/auto', section)"
+            :key="`${i}-${watchType(section.crn)}`")
         td(v-else-if="section.status == 'closed'")
           .pill.closed(style="cursor: inherit")
         td(v-else-if="section.status == 'open'")
@@ -50,9 +63,9 @@
         td(v-else)
           .pill.unknown
 
-        td(v-if="isInTable(section.crn)" :onclick="onclick('remove', section)")
+        td(v-if="isInTable(section.crn)" :onclick="onclick('remove', section)" :key="i + '-remove'")
           .toggle.remove(@click="remove(section.crn)")
-        td(v-else :onclick="onclick('add', section)")
+        td(v-else :onclick="onclick('add', section)" :key="i+'-add'")
           .toggle.add(@click="add(section.crn)")
 
   .message(v-if="department == '' || department == 'select'") Select department first
@@ -263,12 +276,13 @@ export default {
       this.$store.dispatch('playSound', 'alert')
       this.toggleWatching(crn)
     },
-    onclick (type, section) {
+    onclick (_type, section) {
+      const [type, altType] = _type.split('/')
       return `ga(
         'extensionAnalytics.send',
         'event',
         'Course',
-        '${type}',
+        event.altKey ? '${altType || type}' : '${type}',
         '${section.crn}'
       )`
     }

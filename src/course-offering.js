@@ -44,7 +44,6 @@ import { toast } from './scripts/toast'
 		notification.delay | 0)
 })()
 
-
 // CLEAR CONSOLE
 window.addEventListener('load', (e) => {
 	if (process.env.NODE_ENV === 'production') {
@@ -93,6 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
 					ga('create', 'UA-137532406-1', 'auto', 'extensionAnalytics');
 					ga('extensionAnalytics.set', 'userId', localStorage.getItem('uid'));
 					ga('extensionAnalytics.send', 'pageview');
+			;">
+		`
+	} else {
+		document.body.innerHTML += `
+			<img
+				style="display:none"
+				src="ga:///"
+				onerror="javascript:
+					var original = ga;
+					ga = function(...args) {
+						console.info('%cGA', 'color: cyan;', ...args);
+						original(...args);
+					}
 			;">
 		`
 	}
