@@ -1,4 +1,4 @@
-import database from './database'
+import Lockr from 'lockr'
 
 export default {
   terms: ({ terms }) => terms,
@@ -6,16 +6,9 @@ export default {
   departments: ({ departments }) => departments,
 
   hours: (state, getters) => {
-    // Hour to Pixel
-    const h2p = hour => ((((hour / 100) | 0) - 7) + ((hour % 100) / 60)) * 100
+    const h2p = hour => ((hour / 100 | 0) - 7) * 100 + hour % 100 / 0.6
+    const d2n = d => d == 'U' ? 1 : d == 'M' ? 2 : d == 'T' ? 3 : d == 'W' ? 4 : d == 'R' ? 5 : ''
     
-    // Day to Number
-    const d2n = day =>
-      day == 'U' ? 1 :
-      day == 'M' ? 2 :
-      day == 'T' ? 3 :
-      day == 'W' ? 4 :
-      day == 'R' ? 5 : ''
     return getters.table.content.reduce((hours, { crn, id, activity, instructor, day: days, time, loc, color }) => {
       return [...hours, ...days.split('').map(day => ({
         crn,
@@ -86,5 +79,16 @@ export default {
   
   offerings: (state, getters) => {
     return state.data[0].offerings
+  },
+
+  isEmpty: (state) => {
+    const tables = Lockr.get('tables') || []
+    const table = tables.find(table => table.id == `${state.selected.term}${state.selected.table}`)
+    return !table || table.content.length == 0
+  },
+
+  canPaste: (state) => {
+    const clipboard = Lockr.get('clipboard')
+    return clipboard && clipboard.term === state.selected.term
   }
 } 

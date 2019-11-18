@@ -81,6 +81,7 @@ export default {
       title: '',
       lastUpdate: new Date,
       refreshDisabled: false,
+      refreshReminder: null,
       autoRefresh: 0,
       headers: [
         { name: 'Section', value: 'id' },
@@ -101,7 +102,7 @@ export default {
     sections () { return this.$store.getters.sections},
     watching () { return this.$store.state.watching},
     department () { return this.$store.state.selected.department },
-    table () { return this.$store.getters.table.content },
+    table () { return this.$store.getters.table.content }
   },
   methods: {
     onCrnClick (e, crn) {
@@ -110,7 +111,6 @@ export default {
       else {
         const input = document.createElement('input')
         input.style = `
-          background: red;
           position: absolute !important;
           top: 1000px;
           left: 1000px;
@@ -121,7 +121,7 @@ export default {
         input.setSelectionRange(0, 99999)
         document.execCommand('copy')
         this.$store.commit('TOAST', {
-          text: input.value + ' has ben copied!',
+          text: input.value + ' has been copied!',
           color: 'rgba(23, 27, 31, 0.7)'
         })
         e.target.removeChild(input)
@@ -453,6 +453,70 @@ export default {
       opacity: .2
     &:nth-of-type(2)
       display: none
+  @media (max-width: 1200px)
+    thead tr
+      display: flex
+      align-items: center
+      &::before
+        content: "Results"
+        flex: 1
+        padding: 1.2rem 1.6rem
+        display: inline-block
+        font-weight: bold
+      th:not(:last-child)
+        display: none
+      th:last-child
+        display: inline-block
+    tbody tr
+      align-items: center
+      display: grid
+      grid-template-columns: repeat(4, 1fr) repeat(2, min-content)
+      grid-template-rows: repeat(2, 1fr)
+      border-bottom: 1px solid $color-card-secondary
+      width: 100%
+      td
+        border: 0 !important
+      td:nth-child(1)::before
+        content: 'Course-Sec: '
+        font-weight: 500
+      td:nth-child(3) .crn
+        width: min-content
+        white-space: nowrap
+        &::before
+          content: 'CRN: '
+          font-weight: 500
+      td:nth-child(4)::before
+        content: 'Course Name: '
+        font-weight: 500
+      td:nth-child(5)::before
+        content: 'Instructor: '
+        font-weight: 500
+      td:nth-child(6)::before
+        content: 'Day: '
+        font-weight: 500
+      td:nth-child(7)::before
+        content: 'Time: '
+        font-weight: 500
+      td:nth-child(8)::before
+        content: 'Loc: '
+        font-weight: 500
+      td:nth-child(9)
+        grid-column: 5
+        grid-row: 1 / span 2
+      td:nth-child(10)
+        grid-column: 6
+        grid-row: 1 / span 2
+  @media (max-width: 800px)
+
+    tbody tr
+      grid-template-columns: repeat(3, 1fr) repeat(2, min-content)
+      grid-template-rows: repeat(3, 1fr)
+      td:nth-child(9)
+        grid-column: 4
+        grid-row: 1 / span 3
+      td:nth-child(10)
+        grid-column: 5
+        grid-row: 1 / span 3
 </style>
 
 <style lang="sass" theme="light" scoped>

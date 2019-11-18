@@ -68,7 +68,7 @@ export default {
   name: 'Settings',
   data () {
     return {
-      autosubmit: true,
+      autosubmit: this.$store.state.autosubmit,
       sound: localStorage.getItem('sound') == 'true',
       hidden: true
     }

@@ -12,7 +12,6 @@ if (location.search.startsWith('?import')) {
   localStorage.removeItem('co_settings')
 
 // ROUTER
-
 if (exactlyMatch('/Courseoffering')) {
   // DO NOTHING (SHOW ORIGINAL PAGE)
 } else if (match('/courseoffering')) {

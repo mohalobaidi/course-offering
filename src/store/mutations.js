@@ -187,11 +187,15 @@ export default {
       state.session.filters = session.filters
     if (session && session.scroll)
       state.session.scroll = session.scroll
-
+    if (sessions.length)
+      Lockr.set('sessions', sessions.filter(session => {
+        return new Date() -  new Date(session.date) < 2592000000
+      }))
+      
     const imported = localStorage.getItem('co_import') || ''
     if (imported) {
-      let [ term, content ] = imported.split(';')
-      content = JSON.parse(decodeURIComponent(content))
+      let [ term, ...content ] = imported.split(';')
+      content = JSON.parse(decodeURIComponent(content.join(';')))
       Lockr.set('clipboard', { type: 'table', term, payload: { content } })
       Toastify({
         text: 'Imported Table has been saved in clipboard!',

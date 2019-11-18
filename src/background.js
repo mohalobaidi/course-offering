@@ -2,7 +2,8 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 const urls = {
   courseOffering: 'https://registrar.kfupm.edu.sa/courseoffering',
-  registration: 'https://banner9-registration.kfupm.edu.sa/StudentRegistrationSsb/ssb/term/termSelection?mode=registration'
+  registration: 'https://banner9-registration.kfupm.edu.sa/StudentRegistrationSsb/ssb/term/termSelection?mode=registration',
+  login: 'https://banner9-registration.kfupm.edu.sa/StudentRegistrationSsb/ssb/registration/registerPostSignIn?mode=registration'
 }
 
 let preventLogoutLoop
@@ -97,7 +98,7 @@ const init = () => {
   chrome.notifications.onClicked.addListener(() => {
     chrome.notifications.clear('error_prevent_logout')
     chrome.browserAction.setBadgeText({ text: '' })
-    chrome.tabs.create({ url: urls.registration })
+    chrome.tabs.create({ url: urls.login })
   })
   
 
@@ -153,6 +154,14 @@ const init = () => {
         case 'ENABLED_SETTINGS':
             if (enableSettings) {
               enableSettings()
+              send({ status: 200 })
+            } else {
+              send({ status: 404 })
+            }
+        break
+
+        case 'PREVENT_LOGOUT':
+            if (preventLogoutLoop) {
               send({ status: 200 })
             } else {
               send({ status: 404 })

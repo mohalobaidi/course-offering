@@ -327,7 +327,6 @@ export default {
     })
   },
 
-
   exportTable ({ state }, i) {
     const tables = Lockr.get('tables') || []
     let table = tables.find(table => table.id == `${state.selected.term}${i}`)
@@ -353,8 +352,7 @@ function parseData (doc) {
       day:		    	p(trow, 5),
       time:		    	p(trow, 6),
       loc:		    	p(trow, 7),
-      status:       p(trow, 8).toLowerCase(),
-      // status:	  Math.random() < 0.25 ? 'open' : 'closed',
+      status:       p(trow, 8).toLowerCase()
   }))
 }
 

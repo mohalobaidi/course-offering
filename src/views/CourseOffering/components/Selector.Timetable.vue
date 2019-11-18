@@ -19,11 +19,16 @@ export default {
       return this.$store.state.selected.term
     },
     selected: {
-      get () { return this.$store.state.selected.table },
-      set (i) { this.$store.dispatch('selectTable', i) }
+      get () {
+        return this.$store.state.selected.table
+      },
+      set (i) {
+        this.$store.dispatch('selectTable', i)
+      }
     },
   },
   methods: {
+    // TODO: move to seperate file
     menu (id) {
       return () => [
         {
@@ -78,11 +83,13 @@ export default {
         { text: 'Share...', disabled: true },
       ]
     },
+   // TODO: use getters
     isEmpty (i) {
       const tables = Lockr.get('tables') || []
       const table = tables.find(table => table.id == `${this.term}${i}`)
       return !table || table.content.length == 0
     },
+    // TODO: use getters
     canPaste () {
       const clipboard = Lockr.get('clipboard')
       return clipboard && clipboard.term === this.term

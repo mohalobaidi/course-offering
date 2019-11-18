@@ -89,9 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				style="display:none"
 				src="ga:///"
 				onerror="javascript:
-					ga('create', 'UA-137532406-1', 'auto', 'extensionAnalytics');
-					ga('extensionAnalytics.set', 'userId', localStorage.getItem('uid'));
-					ga('extensionAnalytics.send', 'pageview');
+					setTimeout(() => {
+						ga('create', 'UA-137532406-1', 'auto', 'extensionAnalytics');
+						ga('extensionAnalytics.set', 'userId', localStorage.getItem('uid'));
+						ga('extensionAnalytics.send', 'pageview');
+				}, 100)
 			;">
 		`
 	} else {
@@ -101,10 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				src="ga:///"
 				onerror="javascript:
 					var original = ga;
-					ga = function(...args) {
-						console.info('%cGA', 'color: cyan;', ...args);
-						original(...args);
-					}
+					setTimeout(() => {
+						ga = function(...args) {
+							console.info('%cGA', 'color: cyan;', ...args);
+							original(...args);
+						}
+					}, 100)
 			;">
 		`
 	}
