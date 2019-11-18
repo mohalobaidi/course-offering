@@ -12,7 +12,7 @@ import Vue from 'vue'
 import Lockr from 'lockr'
 
 export default {
-  name: 'Course',
+  name: 'CourseDELETE_THIS_COMPONENT',
   props: ['id'],
   computed: {
     start: function () { return this.time.split('-')[0] },
