@@ -91,8 +91,16 @@ export default {
   },
   methods: {
     toggleAutosubmit () {
-      const msg = 'Are you sure you want to turn "Auto Submit" on? It will certainly fail if there are any conflictions.'
-      if (!this.autosubmit && !confirm(msg))
+      const enableMssage =
+        'Are you sure you want to turn "Auto Submit" on?\n'
+      + 'It will certainly fail if there are any conflictions.'
+      const disableMssage =
+        'Are you sure you want to turn "Auto Submit" off?\n'
+      + 'It will no longer submit after auto-filling crns.\n\n'
+      + 'This is applied only for this tab.'
+      if (!this.autosubmit && !confirm(enableMssage))
+        return false
+      if (this.autosubmit && !confirm(disableMssage))
         return false
       this.$store.state.autosubmit = this.autosubmit = !this.autosubmit
     },
