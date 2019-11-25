@@ -271,7 +271,7 @@ export default {
     },
     notify (crn, type) {
       if (this.SECTION_MONITOR && type == 'AUTO') {
-        this.register()
+        this.register(crn)
       }
       this.$store.dispatch('playSound', 'alert')
       this.toggleWatching(crn)
