@@ -10,13 +10,13 @@ let preventLogoutLoop
 
 const checkIfSignedIn = callback => {
   chrome.tabs.getSelected(null, currentTab => {
-    
     if (preventLogoutLoop)
     chrome.tabs.create({ url: urls.registration}, newTab => {
       if (currentTab.id != -1) chrome.tabs.update(currentTab.id, {highlighted: true})
       const listener = chrome.tabs.onUpdated.addListener((id, info, tab) => {
         if (id == newTab.id && info.status == "complete") {
-          callback(tab.url.indexOf('termSelection') != -1)
+          const loggedIn = tab.title === 'Banner' && tab.url.indexOf('termSelection') !== -1
+          callback(loggedIn)
           chrome.tabs.remove(id)
           chrome.tabs.onUpdated.removeListener(listener)
         }
