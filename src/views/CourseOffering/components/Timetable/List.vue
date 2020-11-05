@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .List
   background-color: darken(lighten($color-card-primary, 3%), 2%)
   border-left: 1px solid $color-card-border

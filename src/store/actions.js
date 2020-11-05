@@ -190,12 +190,30 @@ export default {
     })
   },
 
-  updateSelectedTerm({ commit, dispatch }, payload) {
-    dispatch('doPostBack')
+  updateSelectedTerm({ commit, dispatch, state, getters }, term) {
+    const BYPASS_PROTECTION =
+      getters.getFlagValue('BYPASS_PROTECTION') ||
+      window.sessionStorage.getItem('BYPASS_PROTECTION')
+
+    if (BYPASS_PROTECTION) {
+    commit('UPDATE_SELECTED', {...state.selected, term})
+    dispatch('updateOfferings')
+    } else {
+      dispatch('doPostBack')
+    }
   },
 
-  updateSelectedDept({ commit, dispatch }, payload) {
-    dispatch('doPostBack')
+  updateSelectedDept({ commit, dispatch, state, getters }, department) {
+    const BYPASS_PROTECTION =
+      getters.getFlagValue('BYPASS_PROTECTION') ||
+      window.sessionStorage.getItem('BYPASS_PROTECTION')
+
+    if (BYPASS_PROTECTION) {
+      commit('UPDATE_SELECTED', {...state.selected, department})
+      dispatch('updateOfferings')
+    } else {
+      dispatch('doPostBack')
+    }
   },
 
   updateSelectedCourse({ commit, dispatch }, payload) {

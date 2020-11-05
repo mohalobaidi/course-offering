@@ -80,8 +80,40 @@ chrome.extension.sendMessage({type: 'GET_AUTH'}, res => {
 })
 
 // ON DOM LOADED 
-document.addEventListener('DOMContentLoaded', () => {
-	// REMOVE UNWANTED SCRIPT
+document.addEventListener('DOMContentLoaded', async () => {
+	// BYPASS REQUEST REJECTION
+	if (document.title === "Request Rejected") {
+		const res = await new Promise(resolve => {
+			chrome.extension.sendMessage(
+				{type: 'FETCH_DOCUMENT'},
+				res => resolve(res)
+			)
+		})
+		if (res.status === 200) {
+			const doc =  new DOMParser().parseFromString(res.data, 'text/html')
+			console.log(res.data)
+			if (doc.title && document.title !== "Request Rejected") {
+				document.title = doc.title
+				for (let child of [...doc.head.children])
+					document.head.appendChild(child)
+				document.body = doc.body
+				window.sessionStorage.setItem('BYPASS_PROTECTION', true)
+				setTimeout(() => {
+					toast({
+						text: 'Request Rejected, <b>BYPASS REJECTION</b> is now enabled.',
+						backgroundColor: 'rgba(240, 62, 62, .75)',
+						gravity: 'top'
+					})
+					document.body.classList.add('safemode')
+				}, 10)
+			} else {
+				document.body.classList.add('show')
+			}
+		} else {
+			return false
+		}
+	}
+
 	//GOOGLE ANALYTICS
 	if (process.env.NODE_ENV === 'production') {
 		document.body.innerHTML += `
@@ -115,7 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// DISPLAY VERSION
 	const version = chrome.runtime.getManifest().version_name
-	document.getElementsByClassName('active')[1].innerHTML += ` - ${version}`
+	const breadcrumb = document.getElementsByClassName('active')[1]
+	if (breadcrumb) breadcrumb.innerHTML += ` - ${version}`
 
 	// INIT VUE APP
 	document.getElementsByClassName('span3')[0].innerHTML += '<div id="settings"></div>'

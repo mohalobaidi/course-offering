@@ -189,6 +189,16 @@ const init = () => {
           })()
         break
 
+        case 'FETCH_DOCUMENT':         
+          fetch(urls.courseOffering, {method: 'POST'}).then(async res => {
+            const data = await res.text()
+            send({ status: 200, data })
+          }).catch(error => {
+            console.warn('Shouldn\'t cause an error!')
+            send({ status: 400, error })
+          })
+        break
+
         default:
           send({ status: 404 })
         break

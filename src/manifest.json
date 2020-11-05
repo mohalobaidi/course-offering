@@ -1,8 +1,8 @@
 {
 	"name": "KFUPM Course Offering",
 	"short_name": "Course Offering",
-	"version": "0.2.12.2",
-	"version_name": "BETA (0.2.12.2)",
+	"version": "0.2.12.3",
+	"version_name": "BETA (0.2.12.3)",
 	"icons": {
 		"16": "icons/icon16.png",
 		"48": "icons/icon48.png",

@@ -167,9 +167,9 @@ export default {
                             c == '⣟' ? '⣯' :
                             c == '⣯' ? '⣷'  : '⣾') + " KFUPM | Refreshing..."
         }, 100)
-        const beforeLength = this.sections.length
+        const beforeLength = this.sections ? this.sections.length : 0
         this.$store.dispatch('updateOfferings').then(() => {
-          const afterLength = this.sections.length
+          const afterLength = this.sections ? this.sections.length : 0
 
           if (beforeLength < afterLength)
             this.$store.dispatch('playSound', 'more')

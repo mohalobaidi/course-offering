@@ -28,6 +28,9 @@
                 label Auto Refresh
                 p Refreshes the page Automatically (Use it with "Section Monitor")
               .cell
+                label Bypass Misuse Protection (Untested)
+                p This is a temporary solution for URL request rejection. Please turn it off if not needed.
+              .cell
                 label Export/Import Timetable
                 p When this flag is enabled, a new option will appear in the context menu for table to Export/Import tables.
               .cell
