@@ -13,9 +13,10 @@
       col(width="0%")
       col(width="0%")
       col(width="0%")
+      col(width="0%")
     thead
       tr
-        th(v-for="header in headers") {{ header.name }}
+        th(v-for="header in headers" style="white-space: nowrap") {{ header.name }}
         th(style="text-align:center;min-width:118px") Status
         th(v-context="refreshMenu()")
           Icon.refresh(
@@ -34,8 +35,6 @@
           :onclick="onclick('copy/register', section)") {{ section.crn }}
 
         td(v-for="header in headers.slice(3)") {{ section[header.value] }}
-
-
 
         td(v-if="watchType(section.crn) != 'NOT_WATCHED' && section.status == 'open'")
           .pill.open {{ notify(section.crn, watchType(section.crn)) }}
@@ -91,7 +90,8 @@ export default {
         { name: 'Instructor', value: 'instructor' },
         { name: 'Day', value: 'day' },
         { name: 'Time', value: 'time' },
-        { name: 'Location', value: 'loc' }
+        { name: 'Location', value: 'loc' },
+        { name: 'Wait list', value: 'waitlist' }
       ] 
     }
   },

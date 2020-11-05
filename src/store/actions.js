@@ -370,7 +370,8 @@ function parseData (doc) {
       day:		    	p(trow, 5),
       time:		    	p(trow, 6),
       loc:		    	p(trow, 7),
-      status:       p(trow, 8).toLowerCase()
+      status:       p(trow, 8).toLowerCase(),
+      waitlist:       p(trow, 9)
   }))
 }
 
