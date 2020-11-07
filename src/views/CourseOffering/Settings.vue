@@ -133,7 +133,7 @@ export default {
       document.body.classList.remove('noscroll')
     },
     coffee () {
-      window.open('https://www.buymeacoffee.com/IxJ0CWU')
+      window.open('http://buymeacoffee.mohalobaidi.com/')
     }
   }
 }
