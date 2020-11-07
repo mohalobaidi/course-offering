@@ -356,7 +356,7 @@ function parseData (doc) {
   const p = (trow, child) => {
       const raw = trow.childNodes[child].innerText + ''
       const [a, ...res] = raw.split(':')
-      const tags = ';Course-Sec;Activity;CRN;Course Name;Instructor;Day;Time;Loc;Status;'
+      const tags = ';Course-Sec;Activity;CRN;Course Name;Instructor;Day;Time;Loc;Status;Wait List;'
       if (tags.includes(`;${a};`))
           return res.join(':').trim()
       return raw
