@@ -16,7 +16,7 @@
 1. Clone this repo
 2. Run `yarn` or `npm install` to download all required dependencies.
 3. Run `yarn build` or `npm run build` for generating packaged folder `/dist` specifically for extension stuff.
-4. Go to [chrome://extensions](chrome://extensions).
+4. Go to  **chrome://extensions**.
 5. Enable developer mode.
 6. Click on load unpacked extension and select the generated folder.
 
