@@ -1,4 +1,4 @@
-## <img src="src/assets/icon48.png" align="center"> KFUPM Course Offering
+## <img height="32" src="src/assets/icon48.png" align="center"><span>&nbsp;</span> KFUPM Course Offering
 
 > **KFUPM Course Offering** is a chrome extension tool for KFUPM students that will enhance their experience in the [Course Offering website](https://registrar.kfupm.edu.sa/courses-classes/course-offering/).
 
