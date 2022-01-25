@@ -1,6 +1,6 @@
 ## <img height="48" src="https://lh3.googleusercontent.com/28wTEAWabyZf3PTYulLumo8mwi94CvxezqkLLNY2VC5kOgBmRlcRsZ9qep55RkqcqDVgt9wlBEkbEBwgs0wzmzx0ioY=w128-h128-e365-rj-sc0x00ffffff" align="center"> KFUPM Course Offering
 
-> Browser extension that adds useful features on GitHub website
+> **KFUPM Course Offering** is a chrome extension tool for KFUPM students that will enhance their experience in the [Course Offering website](https://registrar.kfupm.edu.sa/courses-classes/course-offering/).
 
 <br/>
 
