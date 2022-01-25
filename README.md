@@ -13,6 +13,7 @@
 
 ## Development
 
+0. Install and Setup [Nodejs](http://nodejs.org)
 1. Clone this repo
 2. Run `yarn` or `npm install` to download all required dependencies.
 3. Run `yarn build` or `npm run build` for generating packaged folder `/dist` specifically for extension stuff.
