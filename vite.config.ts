@@ -18,6 +18,9 @@ export default defineConfig({
             input: "src/manifest.json"
         }
     },
+    server: {
+      open: '/'
+    },
     plugins: [
         pug(),
         vue(),
