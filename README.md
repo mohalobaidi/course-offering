@@ -1,6 +1,6 @@
-## <img height="48" src="https://lh3.googleusercontent.com/28wTEAWabyZf3PTYulLumo8mwi94CvxezqkLLNY2VC5kOgBmRlcRsZ9qep55RkqcqDVgt9wlBEkbEBwgs0wzmzx0ioY=w128-h128-e365-rj-sc0x00ffffff" align="center"> KFUPM Course Offering
+## <img height="32" src="src/assets/icon48.png" align="center"><span>&nbsp;</span> KFUPM Course Offering
 
-> Browser extension that adds useful features on GitHub website
+> **KFUPM Course Offering** is a chrome extension tool for KFUPM students that will enhance their experience in the [Course Offering website](https://registrar.kfupm.edu.sa/courses-classes/course-offering/).
 
 <br/>
 
@@ -13,10 +13,11 @@
 
 ## Development
 
+0. Install and Setup [Nodejs](http://nodejs.org)
 1. Clone this repo
 2. Run `yarn` or `npm install` to download all required dependencies.
 3. Run `yarn build` or `npm run build` for generating packaged folder `/dist` specifically for extension stuff.
-4. Go to [chrome://extensions](chrome://extensions).
+4. Go to  **chrome://extensions**.
 5. Enable developer mode.
 6. Click on load unpacked extension and select the generated folder.
 
