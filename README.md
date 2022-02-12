@@ -23,6 +23,29 @@
 
 - You can also run `yarn dev` or `npm run dev` for content-script development.
 
+## Contributors
+
+**Author:** [Mohammed Alobaidi](https://github.com/mohalobaidi) ([@MohAlobaidi](https://twitter.com/Mohalobaidi))
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+
+<a href="https://github.com/mohalobaidi" >
+  <img src="https://avatars.githubusercontent.com/u/17039073?s=40&v=4" style="border-radius:50%"/>
+</a>
+<a href="https://github.com/Yokozuna59">
+  <img src="https://avatars.githubusercontent.com/u/87622592?s=40&v=4" />
+</a>
+<a href="https://github.com/Wa-lead">
+  <img src="https://avatars.githubusercontent.com/u/81301826?s=40&v=4" />
+</a>
+<a href="https://github.com/ihadabs">
+  <img src="https://avatars.githubusercontent.com/u/34512743?s=40&v=4" />
+</a>
++12 others
+
+
 ## Copyright and License
 
 ❗️ This extension is not sponsored by, endorsed by, or an official project of KFUPM. This is a personal project and is developed solely for providing additional functionalities on KFUPM website.
