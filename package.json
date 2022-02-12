@@ -1,9 +1,9 @@
 {
   "name": "course-offering",
-  "version": "0.0.0",
+  "version": "0.3.0.0",
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
-    "dev": "vite",
+    "build": "vite build",
+    "dev": "vite --host",
     "preview": "vite preview"
   },
   "nodemonConfig": {
@@ -16,6 +16,9 @@
   "dependencies": {
     "@types/chrome": "^0.0.176",
     "nodemon": "^2.0.15",
+    "pinia": "^2.0.0-rc.10",
+    "rollup-plugin-zip": "^1.0.3",
+    "unplugin-vue-components": "^0.17.18",
     "vite-plugin-chrome-extension": "^0.0.7",
     "vue": "^3.2.25",
     "vue3-smooth-dnd": "^0.0.2"

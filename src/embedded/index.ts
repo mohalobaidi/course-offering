@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
-import Main from "./Main.vue";
+import { createPinia } from "pinia"
 import GlobalComponents from '../components'
+import Main from "./Main.vue"
 import '../assets/main.sass'
 
 // Create wrapper
@@ -23,7 +24,10 @@ parent.innerHTML = ''
 // Append wrapper on webpage
 parent.prepend(wrapper)
 
+const pinia = createPinia()
+
 // Mount vue app and init
 createApp(Main)
-.use(GlobalComponents)
-.mount('#app')
+    .use(pinia)
+    .use(GlobalComponents)
+    .mount('#app')

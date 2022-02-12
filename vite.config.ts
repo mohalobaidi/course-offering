@@ -3,14 +3,16 @@ import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 import { chromeExtension } from "vite-plugin-chrome-extension"
 import pug from "vite-plugin-pug"
+import zip from 'rollup-plugin-zip'
 
-// https://vitejs.dev/config/
+import Components from "unplugin-vue-components/vite"
+import {
+  AntDesignVueResolver,
+  ElementPlusResolver,
+  NaiveUiResolver,
+} from "unplugin-vue-components/resolvers"
+
 export default defineConfig({
-    resolve: {
-        alias: {
-            "@": resolve(__dirname, "src"),
-        },
-    },
     build: {
         rollupOptions: {
             input: "src/manifest.json"
@@ -19,6 +21,36 @@ export default defineConfig({
     plugins: [
         pug(),
         vue(),
-        chromeExtension()
+        Components({
+            dirs: ['./', './components','src/components'],
+            directoryAsNamespace: true,
+            resolvers: [
+              AntDesignVueResolver({
+                resolveIcons: true,
+              }),
+              ElementPlusResolver({
+                importStyle: "css",
+              }),
+              NaiveUiResolver()
+            ]
+          }),
+        chromeExtension(),
+        zip({dir: 'releases'})
     ],
+    css: {
+      preprocessorOptions: {
+        sass: {
+          charset: false,
+          additionalData: `@import @/assets/global.sass\n`
+        }
+      }
+    },
+    resolve: {
+        alias: [
+            {
+                find: "@",
+                replacement: resolve(__dirname, "src"),
+            }
+        ]
+    },
 })

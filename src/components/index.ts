@@ -1,4 +1,4 @@
-const files = import.meta.globEager("./*.js");
+const files = import.meta.globEager("./*.vue");
 
 export default (Vue: any) => { // TODO: add Vue typing
     for (const key in files) {
