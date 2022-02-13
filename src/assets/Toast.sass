@@ -1,0 +1,59 @@
+@import "vue-toastification/dist/index.css"
+
+.Vue-Toastification
+    &__toast
+        background: white
+        color: black
+        // @apply -border -border-solid -border-gray-400
+        border-radius: 6px
+        box-shadow: none
+        @apply -border -border-solid -border-gray-300
+        box-shadow:  rgba(140, 149, 159, 0.2) 0px 8px 24px 0px
+        @apply -shadow-lg
+        border-radius: 6px
+        &::after
+            content: ''
+            display: block
+            height: 100%
+            position: absolute
+            top: 0
+            inset-inline-start: 0
+            width: 7px
+            z-index: 100
+        .Vue-Toastification__progress-bar
+            margin-inline-start: 7px
+        &--default
+            &::after
+                @apply -bg-gray-700/80
+            .Vue-Toastification__icon
+                @apply -text-gray-700/80
+            .Vue-Toastification__progress-bar
+                @apply -bg-gray-700/40
+        &--info
+            &::after
+                @apply -bg-blue-700/80
+            .Vue-Toastification__icon
+                @apply -text-blue-700/80
+            .Vue-Toastification__progress-bar
+                @apply -bg-blue-700/40
+        &--success
+            &::after
+                @apply -bg-emerald-700/80
+            .Vue-Toastification__icon
+                @apply -text-emerald-700/80
+            .Vue-Toastification__progress-bar
+                @apply -bg-emerald-700/40
+        &--warning
+            &::after
+                @apply -bg-amber-700/80
+            .Vue-Toastification__icon
+                @apply -text-amber-700/80
+            .Vue-Toastification__progress-bar
+                @apply -bg-amber-700/40
+        &--error
+            &::after
+                @apply -bg-red-700/80
+            .Vue-Toastification__icon
+                @apply -text-red-700/80
+            .Vue-Toastification__progress-bar
+                @apply -bg-red-700/40

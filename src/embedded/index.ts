@@ -1,8 +1,9 @@
 import { createApp } from 'vue'
 import { createPinia } from "pinia"
+import Toast from "vue-toastification"
 import GlobalComponents from '../components'
 import Main from "./Main.vue"
-import '../assets/main.sass'
+import '../assets/main.scss'
 
 // Create wrapper
 const wrapper = document.createElement('div')
@@ -29,5 +30,6 @@ const pinia = createPinia()
 // Mount vue app and init
 createApp(Main)
     .use(pinia)
+    .use(Toast)
     .use(GlobalComponents)
     .mount('#app')

@@ -14,6 +14,8 @@
     "ext": "js,ts,vue,css,sass"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.4.3",
+    "@heroicons/vue": "^1.0.5",
     "@types/chrome": "^0.0.176",
     "nodemon": "^2.0.15",
     "pinia": "^2.0.0-rc.10",
@@ -21,6 +23,8 @@
     "unplugin-vue-components": "^0.17.18",
     "vite-plugin-chrome-extension": "^0.0.7",
     "vue": "^3.2.25",
+    "vue-dataset": "^3.4.3",
+    "vue-toastification": "^2.0.0-rc.5",
     "vue3-smooth-dnd": "^0.0.2"
   },
   "devDependencies": {

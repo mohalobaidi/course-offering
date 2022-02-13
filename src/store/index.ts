@@ -112,3 +112,14 @@ export default defineStore('main', {
     },
   }
 })
+
+
+import { useToast, POSITION } from "vue-toastification"
+
+const toast = useToast()
+window.addEventListener('online', () => {
+  toast.success('Course Offering is back online!', { position: POSITION.BOTTOM_RIGHT })
+})
+window.addEventListener('offline', () => {
+  toast.warning('Warning! No internet connection.', { position: POSITION.BOTTOM_RIGHT })
+})

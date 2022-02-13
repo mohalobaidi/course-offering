@@ -56,6 +56,9 @@ export default defineComponent({
         remove () {
             const store = useMainStore()
             return store.removeCourse(this.course.id)
+        },
+        onclick () {
+
         }
     }
 })
@@ -68,9 +71,9 @@ export default defineComponent({
     @apply -absolute
     @apply -select-none
     // TODO: find an alternative solution with logical directions.
-    transform: translateX(calc(var(--column) * 100%)) translateY(calc(var(--row) * 100%))
+    transform: translateX(calc(var(--column) * 100%)) translateY(calc(var(--row) * 100%)) !important
     [dir="rtl"] &
-        transform: translateX(calc(var(--column) * -100%)) translateY(calc(var(--row) * 100%))
+        transform: translateX(calc(var(--column) * -100%)) translateY(calc(var(--row) * 100%)) !important
     &:hover
         @apply -z-10
     .wrapper
@@ -119,6 +122,8 @@ export default defineComponent({
             @apply -shadow-md
             &:hover
                 transform: scale(1.01)
+.list-enter-from .wrapper, .list-leave-to .wrapper
+    transform: scale(0.5)
 </style>
 
 <style lang="sass">
