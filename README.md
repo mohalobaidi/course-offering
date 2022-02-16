@@ -11,24 +11,6 @@
 
 <img alt="Chrome" src="https://img.icons8.com/fluent/24/000000/chrome.png" align="center"/> Install extension from [Chrome Web Store][chrome]
 
-### Permissions required
-
-#### > Identity
-*To make your experience tailored for you. Also for enabling timetable sharing.*
-
-#### > ActiveTab
-*To open the Course Offering page rightaway when you click on the extension icon.*
-
-#### > notifications
-*Used for alerting the user when there are errors and urgent action is needed.*
-
-#### > cookies
-*To store users timetables and all other customizations locally.*
-
-#### > "\*://\*.kfupm.edu.sa/\*"
-
-*for running on `kfupm.edu.sa` domain.*
-
 ## Development
 
 0. Install and Setup [Nodejs](http://nodejs.org)
