@@ -1,4 +1,5 @@
-## <img height="32" src="src/assets/icon48.png" align="center"><span>&nbsp;</span> KFUPM Course Offering
+## <img height="32" src="src/assets/icon48.png" align="center" /><span>&nbsp;</span> KFUPM Course Offering <span>&nbsp;</span> [![Awesome KFUPM List](https://img.shields.io/badge/awesome-KFUPM-18a400?cacheSeconds=maxAge&labelColor=gray)][awesome-kfupm]
+
 
 > **KFUPM Course Offering** is a chrome extension tool for KFUPM students that will enhance their experience in the [Course Offering website](https://registrar.kfupm.edu.sa/courses-classes/course-offering/).
 
@@ -6,7 +7,6 @@
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/d/jajiinopiopggfikifkepeklkfpcbhnm.svg?style=for-the-badge&label=Chrome%20users&ogo=google-chrome&logoColor=white)][chrome]
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jajiinopiopggfikifkepeklkfpcbhnm.svg?style=for-the-badge&logo=google-chrome&logoColor=white)][chrome]
-
 ## Supported Browsers
 
 <img alt="Chrome" src="https://img.icons8.com/fluent/24/000000/chrome.png" align="center"/> Install extension from [Chrome Web Store][chrome]
@@ -64,3 +64,4 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 <!-- Links -->
 
 [chrome]: https://chrome.google.com/webstore/detail/kfupm-course-offering/jajiinopiopggfikifkepeklkfpcbhnm?hl=en&authuser=0
+[awesome-kfupm]: https://github.com/mohalobaidi/awesome-kfupm
