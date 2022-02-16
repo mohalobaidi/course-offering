@@ -5,6 +5,7 @@
     .wrapper(:style="`--duration: ${duration}`"
     @mouseenter="$emit('enter', $event)"
     @mouseleave="$emit('leave', $event)"
+    :valsss="valsss"
     @click="onclick")
         .grid
             .cell {{ course.id }}-{{ number }}@{{location.building}}-{{location.room}}
@@ -28,7 +29,7 @@ export default defineComponent({
     props: [
         'day', 'time', 'course', 'number',
         'location', 'instructor', 'time',
-        'originPoint'
+        'originPoint', 'valsss'
     ],
     computed: {
         column () {
@@ -70,6 +71,7 @@ export default defineComponent({
     @apply -w-full -h-full 
     @apply -absolute
     @apply -select-none
+    @apply -transition-all
     // TODO: find an alternative solution with logical directions.
     transform: translateX(calc(var(--column) * 100%)) translateY(calc(var(--row) * 100%)) !important
     [dir="rtl"] &
@@ -82,8 +84,11 @@ export default defineComponent({
         @apply -m-1 -px-2 -py-1
         @apply -rounded-md
         @apply -font-semibold -text-sm
-        @apply -transition-transform -transform-gpu
+        @apply -transition-transform -transition-shadow
+        @apply -will-change-transform
         @apply -cursor-pointer
+
+        @apply -ring-0 -ring-offset-0
         .grid
             @apply -grid
             @apply -grid-cols-[1fr_auto] -grid-rows-[auto_1fr] -gap-x-1
@@ -122,8 +127,6 @@ export default defineComponent({
             @apply -shadow-md
             &:hover
                 transform: scale(1.01)
-.list-enter-from .wrapper, .list-leave-to .wrapper
-    transform: scale(0.5)
 </style>
 
 <style lang="sass">
@@ -136,7 +139,7 @@ export default defineComponent({
         @apply -bg-gray-200 -text-gray-900
     @each $color in $colors
         &.#{$color} .wrapper
-            @apply #{'-bg-#{$color}-600 -text-#{$color}-300 -shadow-#{$color}-700/50'} 
+            @apply #{'-bg-#{$color}-600 -text-#{$color}-100 -shadow-#{$color}-900/30'} 
             &:hover
                 @apply #{'-bg-#{$color}-500 -text-#{$color}-100'}
             &:active

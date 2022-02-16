@@ -21,7 +21,8 @@
     "content_scripts": [
         {
             "matches": ["https://registrar.kfupm.edu.sa/courses-classes/course-offering/"],
-            "js": ["embedded/index.ts"]
+            "js": ["embedded/index.ts"],
+            "run_at": "document_start"
         }
     ]
 }

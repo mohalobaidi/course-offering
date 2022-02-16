@@ -55,9 +55,8 @@
                         | {{ section.time.start.slice(0, 2) + ":" + section.time.start.slice(2) }}
                         | to {{ section.time.end.slice(0, 2) + ":" + section.time.end.slice(2) }}
             td.waitlist
-                span(:class="section.waitlist > 3 ? 'green' : section.waitlist > 1 ? 'yellow' : 'red'")
-                    | {{ '█ '.repeat(section.waitlist) }}
                 | {{ '█ '.repeat(5 - section.waitlist) }} 
+                span.green {{ '█ '.repeat(section.waitlist) }}
             td
                 .status(:class="section.seats < 0 ? 'red' : 'green'") {{ section.seats < 0 ? 'CLOSED' : 'OPEN' }}
             td
@@ -92,12 +91,12 @@ export default defineComponent({
 
 <style lang="sass">
 .Datatable
+    @apply -bg-white
     overflow: hidden
     border-radius: 6px
     font-family: Poppins
     @apply -border -border-solid -rounded-lg -border-gray-300
-    @apply -shadow-lg
-    
+    @apply -shadow-md
     table
         @apply -w-full
         @apply -font-semibold
@@ -126,16 +125,17 @@ export default defineComponent({
         .status
             padding: 2px
             &.green
-                @apply -text-emerald-700 -bg-emerald-100
-                @apply -border-2 -border-solid -border-emerald-500
+                @apply -text-green-500
+                @apply -border-2 -border-solid -border-green-500/50
             &.red
-                @apply -text-rose-700 -bg-rose-100
-                @apply -border-2 -border-solid -border-rose-500
+                @apply -text-slate-300 
+                @apply -border-2 -border-solid -border-green-900/20
             @apply -rounded-[50px] -text-center
         .waitlist
-            @apply -text-gray-300
+            @apply -text-xs
+            @apply -text-gray-300/50
             .green
-                @apply -text-green-400
+                @apply -text-green-300
             .yellow
                 @apply -text-yellow-400
             .red
@@ -144,6 +144,7 @@ export default defineComponent({
         border-color: #dee2e6
         height: 32px
         width: 32px
+        padding: 4px
         border: 1px solid
         background: transparent
         border-radius: 50%

@@ -39,7 +39,7 @@ export default defineComponent({
                         name: offering.instructor_name
                     },
                     seats: offering.available_seats | 0,
-                    waitlist: Math.random() * 5 | 0
+                    waitlist: offering.waiting_list_count | 0
                 }))  
                 main.updateOfferings(offerings)
             })
@@ -48,5 +48,6 @@ export default defineComponent({
 </script>
 
 <style lang="sass">
-
+body
+    @apply -bg-gray-50
 </style>

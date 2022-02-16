@@ -1,7 +1,15 @@
 import Section from "./Section"
 
+
+interface Table {
+    id: number,
+    shareID?: string,
+    sections: Section[]
+}
+
 export default interface State {
-    sections: Section[],
+    tables: Table[],
+    selectedTableID: number,
     offerings: Section[],
-    colors: Map<string, string>
-}  
+    colors: any[]
+}

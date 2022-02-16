@@ -1,22 +1,26 @@
 <!-- TODO: CLEAN!!! -->
 <template lang="pug">
-.Timetable
-    TimetableMenu(@peekTable="peekTable" @unpeekTable="unpeekTable")
-    .table
-        .days-strip
-            .item(v-for="day in days") {{ day }}
-        .timeline
-            .item(v-for="hour in hours") {{String(hour).padStart(2, '0')}}:00
-        .content
-            TransitionGroup(name="list")
-                Event(
-                    v-for="event in events"
-                    v-bind="event"
-                    :keyval="`${event.course.id}-${event.type}-${event.days.indexOf(event.day)}`"
-                    :originPoint="hours[0]"
-                    :key="`${event.course.id}-${event.type}-${event.days.indexOf(event.day)}`"
-                    @enter="onEventHover"
-                    @leave="onEventHover")
+.TimetableMenu
+    .row
+        .col
+            Select
+                span(
+                    v-for="table in tables"
+                    :selected="table.id === currentTable.id"
+                    @click="selectTable(table.id)"
+                    @mousemove="$emit('peekTable', table.id)"
+                    @mouseleave="$emit('unpeekTable', table.id)") Table {{ table.id + 1 }}
+                .dividor.stick
+                span.stick.add(@click="createTable()") Create new table
+            .buttons
+                button
+                    CalendarIcon
+                button(@click="share")
+                    ShareIcon
+                button
+                    SaveIcon
+                button
+                    DotsVerticalIcon
 </template>
 
 <script lang="ts">
@@ -31,34 +35,27 @@ const dayToNum = (day : string) => {
     }
 }
 
-import { defineComponent, ref } from "vue"
+import { defineComponent } from "vue"
 import { storeToRefs } from 'pinia'
 import useMainStore from "@/store"
 import Event from '@/types/Event'
 import { CalendarIcon, DotsVerticalIcon, SaveIcon, ShareIcon } from '@heroicons/vue/solid'
 
 export default defineComponent({
+    name: 'TimetableMenu',
     data: () => ({
         days: ['SUN', 'MON', 'TUE', 'WED', 'THU']
     }),
     components: { CalendarIcon, DotsVerticalIcon, SaveIcon, ShareIcon },
     setup() {
         const store = useMainStore()
-        const { hours, tables, currentTable } = storeToRefs(store)
-        const peekedTable = ref()
-        const unpeekEvent = ref()
-        return { tables, currentTable, peekedTable, unpeekEvent, hours }
+        const { events, hours, tables, currentTable } = storeToRefs(store)
+        return { _events: events, tables, currentTable, hours }
     },
     computed: {
         events () {
-            const table = this.peekedTable !== null
-                ? this.tables.find(table => table.id === this.peekedTable)
-                || this.currentTable : this.currentTable
-            const sections = [...table.sections]
-            return sections.flatMap((section) => {
-                const days = `${section.days}`.split('')
-                return Array.from(days, day => ({ day, ...section}))
-            })
+            const events = this._events as unknown as Event[]
+            return events.sort((a : Event, b : Event) => dayToNum(b.day) - dayToNum(a.day))
         }
     },
     methods: {
@@ -70,35 +67,61 @@ export default defineComponent({
                 this.$el.classList.add(`${color}-hover`)
             }
         },
-        peekTable (tableID : number) {
-            console.log('peek')
-            this.unpeekEvent = clearTimeout(this.unpeekEvent)
-            this.peekedTable = tableID
-            this.unpeekEvent = setTimeout(() => {
-                this.peekedTable = null
-            }, 1000)
-        }, 
-        unpeekTable () {     
-            this.unpeekEvent = clearTimeout(this.unpeekEvent)    
-            this.unpeekEvent = setTimeout(() => {
-                this.peekedTable = null
-            }, 0)
+        selectTable (tableID : number) {
+            const store = useMainStore()
+            return store.selectTable(tableID)
+        },
+        createTable () {
+            const store = useMainStore()
+            return store.createTable()
+        },
+        share () {
+
         }
     }
 })
 </script>
 
 <style lang="sass">
-.Timetable
+.TimetableMenu
     @each $color in $colors
         &.#{$color}-hover .#{$color} .wrapper
             @apply -shadow-lg
             @apply -ring -ring-offset-2
+    .col
+        @apply -flex -items-end -justify-between
+    .Select
+        .add
+            @apply -text-sky-600/80 #{!important}
+    .buttons
+        @apply -inline-block
+        @apply -bg-white -border -border-gray-300 -rounded-md
+        @apply -shadow-sm -text-left -cursor-default
+        @apply -border -border-solid -border-gray-300
+        @apply -ring-0 -ring-transparent
+        @apply -cursor-pointer
+        @apply -transition-all
+        @apply -mb-2
+        @apply -flex
+        button
+            @apply -grid -items-center
+            @apply -grid-cols-[auto_auto]
+            @apply -font-bold
+            @apply -px-5 -py-[0.625rem]
+            @apply -text-gray-500/80 -uppercase
+            &:hover
+                @apply -bg-gray-100/40
+            &:active
+                @apply -bg-gray-100/80
+            &:not(:first-child)
+                @apply -border-0 -border-l -border-solid -border-gray-200
+        svg
+            @apply -h-5 -w-5 -text-gray-400/80
+
+        
     .table
-        @apply -bg-white
-        @apply -shadow-md
         @apply -relative
-        font-family: Poppins, sans-serif
+        font-family: Poppins
         @apply -h-[800px]
         @apply -grid
         grid-template: auto 1fr / auto 1fr

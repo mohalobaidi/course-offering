@@ -15,7 +15,10 @@ import {
 export default defineConfig({
     build: {
         rollupOptions: {
-            input: "src/manifest.json"
+            input: "src/manifest.json",
+            output: {
+              format: "es"
+            }
         }
     },
     server: {
@@ -25,7 +28,7 @@ export default defineConfig({
         pug(),
         vue(),
         Components({
-            dirs: ['./', './components','src/components'],
+            dirs: ['./components','src/components'],
             directoryAsNamespace: true,
             resolvers: [
               AntDesignVueResolver({
@@ -55,5 +58,5 @@ export default defineConfig({
                 replacement: resolve(__dirname, "src"),
             }
         ]
-    },
+    }
 })

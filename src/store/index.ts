@@ -4,34 +4,45 @@ import Event from '@/types/Event'
 import Course from '@/types/Course'
 import State from '@/types/State'
 import { Colors } from '@/enums/Colors'
+import browser from 'webextension-polyfill'
+
+// const connect = () => {
+function establishConnection () {
+  const port = browser.runtime.connect('bbickcmmdidmobmmbgiaedkffokgdhaj')
+  console.log('Connected!')
+  port.onDisconnect = (() => {
+    console.log('Reconnecting...')
+    establishConnection()
+  }) as any
+}
+establishConnection()
 
 export default defineStore('main', {
+  persist: {
+    enabled: true
+  },
   state: (): State => {
-    try {
-      const sections = JSON.parse(localStorage.getItem('sections') || '') as Section[]
-      const colors = new Map(JSON.parse(localStorage.getItem('colors') || '')) as Map<string, string>
-      return {
-        sections,
-        colors,
-        offerings: [],
-      }
-    } catch (err) {
-      console.error(err)
-      return {
-        sections: [],
-        offerings: [],
-        colors: new Map
-      }
+    return {
+      tables: [{
+        id: 0,
+        sections: []
+      }],
+      selectedTableID: 0,
+      offerings: [],
+      colors: new Array
     }
   },
 
   getters: {
     events (state) {
-      const sections : Section[] = [...this.sections]
+      const sections : Section[] = [...this.currentTable.sections]
       return sections.flatMap((section : Section) => {
         const days = `${section.days}`.split('')
         return Array.from(days, day => ({ day, ...section}))
       })
+    },
+    currentTable (state) {
+      return state.tables[state.selectedTableID]
     },
     hours () {
       let firstHour = 2359, lastHour = 0
@@ -52,19 +63,19 @@ export default defineStore('main', {
   
   actions: {
     addSection (section: Section) {
-      if (!this.colors.has(section.course.id)) {
+      if (!this.colors.some(([key, value]) => key === section.course.id)) {
         const color = Colors[Colors.SIZE * Math.random() | 0]
-        this.colors.set(section.course.id, color)
+        this.colors.push([section.course.id, color])
       }
 
       if (section.time.start === section.time.end) return console.error('Can\'t add section that has no time')
 
       
-      const duplicate = this.sections.find(({ course, type }) => {
+      const duplicate = this.currentTable.sections.find(({ course, type }) => {
         return section.course.id  == course.id && section.type === type
       })
 
-      const collision = this.sections.find(other => {
+      const collision = this.currentTable.sections.find(other => {
         // Exclude duplicated sections from checking process.
         if (duplicate?.crn === other.crn) return false
 
@@ -84,25 +95,20 @@ export default defineStore('main', {
       
       if (duplicate) this.removeSection(duplicate)
       
-      this.sections.push(section)
-
-      localStorage.setItem('sections', JSON.stringify(this.sections))
-      localStorage.setItem('colors', JSON.stringify([...this.colors.entries()]))
+      this.currentTable.sections.push(section)
     },
     removeSection ({ type, course }: Section) {
-      console.log(this.sections)
-      this.sections = this.sections.filter(section => {
+      this.currentTable.sections = this.currentTable.sections.filter(section => {
         return (section.course.id !== course.id) || (section.type !== type)
       })
-      console.log(this.sections)
+      console.log(this.currentTable.sections)
     },
     removeCourse (courseID : string) {
-      this.sections = this.sections.filter(section => section.course.id !== courseID)
-      localStorage.setItem('sections', JSON.stringify(this.sections))
+      this.currentTable.sections = this.currentTable.sections.filter(section => section.course.id !== courseID)
     },
     getCourseColor (course: Course) {
-      return this.colors.get(course.id)
-      
+      const [, value] = this.colors.find(([key, value]) => key === course.id)
+      if (value) return value
     },
     updateOfferings (sections: Section[]) {
       this.offerings = sections
@@ -110,11 +116,28 @@ export default defineStore('main', {
     clearData () {
       this.$reset()
     },
+    selectTable (tableID : number) {
+      const table = this.tables.find(table => table.id === tableID)
+      if (table) this.selectedTableID = table.id
+    },
+    createTable () {
+      const lastTable = this.tables[this.tables.length - 1]
+      if (lastTable.sections.length === 0) {
+        this.selectedTableID = lastTable.id
+      } else {
+        this.selectedTableID = this.tables.length
+        this.tables.push({
+          id: this.selectedTableID,
+          sections: []
+        })
+      }
+    }
   }
 })
 
 
 import { useToast, POSITION } from "vue-toastification"
+import { connect } from "http2"
 
 const toast = useToast()
 window.addEventListener('online', () => {
